@@ -11,14 +11,26 @@ import { useEffect, useRef, useState } from "react";
    Vertical: rename gallery-1 … gallery-5 to your actual filenames
    ═══════════════════════════════════════════════════════════════════════════ */
 const galleryImages = [
-  { src: "/images/poker-table.jpg", horizontal: true, alt: "Poker table setup" },
-  { src: "/images/gallery-1.jpg", horizontal: false, alt: "Poker evening" },
-  { src: "/images/gallery-2.jpg", horizontal: false, alt: "At the table" },
+  {
+    src: "/images/poker-table.jpg",
+    horizontal: true,
+    alt: "Poker table setup",
+  },
+  { src: "/images/cards-glasses.jpg", horizontal: false, alt: "Poker evening" },
+  { src: "/images/cards-poker.jpg", horizontal: false, alt: "At the table" },
   { src: "/images/table-tv.jpg", horizontal: true, alt: "Lounge with screens" },
-  { src: "/images/gallery-3.jpg", horizontal: false, alt: "Cards in play" },
-  { src: "/images/fruit-wine-table.jpg", horizontal: true, alt: "Wine & refreshments" },
-  { src: "/images/gallery-4.jpg", horizontal: false, alt: "Studio interior" },
-  { src: "/images/gallery-5.jpg", horizontal: false, alt: "Evening atmosphere" },
+  { src: "/images/wine-table.jpg", horizontal: false, alt: "Wine & table" },
+  {
+    src: "/images/fruit-wine-table.jpg",
+    horizontal: true,
+    alt: "Wine & refreshments",
+  },
+  { src: "/images/table-light.jpg", horizontal: false, alt: "Studio interior" },
+  {
+    src: "/images/cards-table.jpg",
+    horizontal: false,
+    alt: "Cards on the table",
+  },
 ];
 
 // ─── Animated counter ────────────────────────────────────────────────────────
@@ -155,9 +167,7 @@ function Nav() {
         transition: "background 0.4s ease, box-shadow 0.4s ease",
         background: scrolled ? "rgba(9,9,11,0.95)" : "transparent",
         backdropFilter: scrolled ? "blur(16px)" : "none",
-        boxShadow: scrolled
-          ? "0 1px 0 rgba(255,255,255,0.06)"
-          : "none",
+        boxShadow: scrolled ? "0 1px 0 rgba(255,255,255,0.06)" : "none",
       }}
     >
       <div
@@ -336,12 +346,8 @@ function Nav() {
               width: "100%",
               transition: "background 0.2s",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.background = "#a01830")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.background = "#c41e3a")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#a01830")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#c41e3a")}
           >
             Book Now
           </Link>
@@ -420,7 +426,10 @@ function formatEventDate(iso: string) {
   const d = new Date(iso);
   return {
     day: new Intl.DateTimeFormat("en-GB", { weekday: "long" }).format(d),
-    short: new Intl.DateTimeFormat("en-GB", { month: "short", day: "numeric" }).format(d),
+    short: new Intl.DateTimeFormat("en-GB", {
+      month: "short",
+      day: "numeric",
+    }).format(d),
   };
 }
 
@@ -897,7 +906,8 @@ export default function Home() {
                               }}
                             >
                               {plainDesc}
-                              {(ev.description?.replace(/<[^>]*>/g, "").length ?? 0) > 120
+                              {(ev.description?.replace(/<[^>]*>/g, "")
+                                .length ?? 0) > 120
                                 ? "…"
                                 : ""}
                             </p>
@@ -1039,8 +1049,8 @@ export default function Home() {
                       }}
                     >
                       Poker Studio is more than a card room. It&apos;s a private
-                      venue where strategy, culture, and connection come together
-                      over premium experiences.
+                      venue where strategy, culture, and connection come
+                      together over premium experiences.
                     </p>
                     <p
                       style={{
@@ -1439,9 +1449,7 @@ export default function Home() {
               >
                 Ready to
                 <br />
-                <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
-                  play?
-                </em>
+                <em style={{ fontStyle: "italic", color: "#c9a96e" }}>play?</em>
               </h2>
               <p
                 style={{
@@ -1466,7 +1474,10 @@ export default function Home() {
                   marginBottom: 48,
                 }}
               >
-                <a href="mailto:info@pokerstudio.co.uk" className="contact-card">
+                <a
+                  href="mailto:info@pokerstudio.co.uk"
+                  className="contact-card"
+                >
                   <Mail
                     size={18}
                     style={{ color: "#c9a96e", margin: "0 auto 8px" }}
@@ -1586,8 +1597,7 @@ export default function Home() {
             POKER <span style={{ color: "#c9a96e" }}>STUDIO</span>
           </span>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>
-            Private Events · Canary Wharf, London · ©{" "}
-            {new Date().getFullYear()}
+            Private Events · Canary Wharf, London · © {new Date().getFullYear()}
           </p>
         </div>
       </footer>
