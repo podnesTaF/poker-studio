@@ -70,6 +70,15 @@ model RegistrationGuest {
   @@index([registrationId])
 }
 
+// ─── Email Subscribers ──────────────────────────────────────────────────────────
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+}
+
 // ─── Gallery (home page) ───────────────────────────────────────────────────────
 
 model GalleryImage {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Trash2, ExternalLink } from "lucide-react";
+import { ArrowLeft, Save, Trash2, ExternalLink, Send, Loader2 } from "lucide-react";
 import { RichTextEditor } from "./RichTextEditor";
 import { ImageUpload, type ImageItem } from "./ImageUpload";
 
@@ -62,6 +62,9 @@ export function EventForm({ event }: { event?: EventData }) {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+
+  const [sendingAnnouncement, setSendingAnnouncement] = useState(false);
+  const [announcementResult, setAnnouncementResult] = useState<string | null>(null);
 
   useEffect(() => {
     if (!slugManual) setSlug(slugify(title));
@@ -129,6 +132,29 @@ export function EventForm({ event }: { event?: EventData }) {
     setDeleting(true);
     await fetch(`/api/admin/events/${event.id}`, { method: "DELETE" });
     router.push("/admin");
+  }
+
+  async function handleSendAnnouncement() {
+    if (!event) return;
+    if (!confirm("Send announcement email to all subscribers?")) return;
+
+    setSendingAnnouncement(true);
+    setAnnouncementResult(null);
+
+    try {
+      const res = await fetch(`/api/admin/events/${event.id}/announce`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setAnnouncementResult(`Error: ${data.error ?? "Failed to send"}`);
+      } else {
+        setAnnouncementResult(data.message);
+      }
+    } catch {
+      setAnnouncementResult("Network error. Please try again.");
+    }
+    setSendingAnnouncement(false);
   }
 
   const inputClass =
@@ -358,6 +384,48 @@ export function EventForm({ event }: { event?: EventData }) {
                   </div>
                 </label>
               </div>
+
+              {/* Email Announcement card */}
+              {isEditing && published && (
+                <div className="bg-[#fdfaf5] border border-[#e0d6c8] rounded-xl p-6">
+                  <div className="text-[11px] font-bold tracking-[0.18em] uppercase text-[#8c7f6e] pb-2 border-b border-[#e0d6c8] mb-4">
+                    Email Announcement
+                  </div>
+                  <p className="text-[12px] text-[#8c7f6e] mb-4 leading-relaxed">
+                    Send an announcement email about this event to all subscribers.
+                  </p>
+
+                  {announcementResult && (
+                    <div
+                      className={`text-[12px] mb-3 px-3 py-2 rounded-md ${
+                        announcementResult.startsWith("Error")
+                          ? "text-[#b5604a] bg-[rgba(181,96,74,0.06)] border border-[#e8b4a4]"
+                          : "text-[#4a7a6a] bg-[rgba(74,122,106,0.06)] border border-[rgba(74,122,106,0.2)]"
+                      }`}
+                    >
+                      {announcementResult}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={handleSendAnnouncement}
+                    disabled={sendingAnnouncement}
+                    className="w-full flex items-center justify-center gap-2 text-[12px] font-bold tracking-[0.14em] uppercase py-2.5 rounded-md border border-[#e0d6c8] bg-transparent text-[#2a231a] cursor-pointer transition-all hover:bg-[rgba(201,169,110,0.08)] hover:border-[#c9a96e] disabled:opacity-60"
+                  >
+                    {sendingAnnouncement ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" />
+                        Sending…
+                      </>
+                    ) : (
+                      <>
+                        <Send size={14} />
+                        Send Announcement
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
 
               {/* Save button (mobile-friendly duplicate) */}
               <button

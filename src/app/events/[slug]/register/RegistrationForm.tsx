@@ -131,6 +131,8 @@ export function RegistrationForm({ event }: { event: EventInfo }) {
   const [phone, setPhone] = useState("");
   const [guests, setGuests] = useState<Guest[]>([]);
 
+  const [subscribeToEmails, setSubscribeToEmails] = useState(true);
+
   // Payment state
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [registrationId, setRegistrationId] = useState<string | null>(null);
@@ -173,6 +175,7 @@ export function RegistrationForm({ event }: { event: EventInfo }) {
           email,
           phone,
           guests: guests.filter((g) => g.fullName.trim()),
+          subscribeToEmails,
         }),
       });
 
@@ -351,6 +354,24 @@ export function RegistrationForm({ event }: { event: EventInfo }) {
                   <Plus size={14} />
                   Add Another Person
                 </button>
+
+                {/* Email subscription opt-in */}
+                <label className="flex items-start gap-3 cursor-pointer bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)] rounded-xl px-5 py-4">
+                  <input
+                    type="checkbox"
+                    checked={subscribeToEmails}
+                    onChange={(e) => setSubscribeToEmails(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 rounded border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.04)] accent-[#c9a96e] shrink-0"
+                  />
+                  <div>
+                    <span className="text-[13px] font-medium text-[rgba(255,255,255,0.7)] block">
+                      Keep me updated on future events
+                    </span>
+                    <span className="text-[11px] text-[rgba(255,255,255,0.35)] mt-0.5 block">
+                      Get notified about new poker nights, masterclasses, and exclusive experiences.
+                    </span>
+                  </div>
+                </label>
 
                 <button
                   type="submit"

@@ -163,6 +163,13 @@ exports.Prisma.RegistrationGuestScalarFieldEnum = {
   phone: 'phone'
 };
 
+exports.Prisma.SubscriberScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.GalleryImageScalarFieldEnum = {
   id: 'id',
   url: 'url',
@@ -202,6 +209,7 @@ exports.Prisma.ModelName = {
   EventImage: 'EventImage',
   Registration: 'Registration',
   RegistrationGuest: 'RegistrationGuest',
+  Subscriber: 'Subscriber',
   GalleryImage: 'GalleryImage',
   SiteSetting: 'SiteSetting'
 };

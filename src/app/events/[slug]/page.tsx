@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Users, CreditCard } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Users, CreditCard } from "lucide-react";
 
 const SERIF = "var(--font-playfair), 'Playfair Display', Georgia, serif";
 
@@ -55,6 +55,17 @@ export default async function EventPage({
       )}
 
       <main className="relative max-w-[900px] mx-auto px-6 -mt-20 pb-20">
+        {/* Page header / back navigation */}
+        <header className="mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-[rgba(255,255,255,0.7)] hover:text-[#f5f5f0] transition-colors"
+          >
+            <ArrowLeft size={16} />
+            <span>Back to Home</span>
+          </Link>
+        </header>
+
         {/* Title */}
         <div className="mb-8">
           <span className="tag tag-gold mb-4 inline-block">

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X, MapPin, Mail, Phone } from "lucide-react";
+import { Menu, X, MapPin, Mail, Phone, CheckCircle, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -403,6 +403,231 @@ function Marquee() {
         ))}
       </div>
     </div>
+  );
+}
+
+// ─── Subscribe Section ────────────────────────────────────────────────────────
+function SubscribeSection() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  async function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) return;
+
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/subscribers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setStatus("error");
+        setMessage(data.error ?? "Something went wrong");
+        return;
+      }
+      setStatus("success");
+      setMessage(data.message ?? "Subscribed!");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  }
+
+  return (
+    <section
+      style={{
+        background: "#0f0f0f",
+        padding: "100px 0",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div className="dot-grid" style={{ opacity: 0.3 }} />
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%,-50%)",
+          width: 700,
+          height: 700,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(196,30,58,0.06) 0%, transparent 60%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        style={{
+          maxWidth: 600,
+          margin: "0 auto",
+          padding: "0 24px",
+          textAlign: "center",
+          position: "relative",
+        }}
+      >
+        <Reveal>
+          <span
+            className="tag"
+            style={{ marginBottom: 24, display: "inline-flex" }}
+          >
+            Stay Updated
+          </span>
+          <h2
+            className="font-heading"
+            style={{
+              fontSize: "clamp(36px, 5vw, 60px)",
+              fontWeight: 400,
+              color: "#f5f5f0",
+              lineHeight: 1.05,
+              marginBottom: 16,
+            }}
+          >
+            Never miss an{" "}
+            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>event</em>
+          </h2>
+          <p
+            style={{
+              fontSize: 15,
+              color: "rgba(255,255,255,0.45)",
+              lineHeight: 1.75,
+              marginBottom: 36,
+              maxWidth: 440,
+              margin: "0 auto 36px",
+            }}
+          >
+            Subscribe to get notified when we announce new events,
+            exclusive evenings, and special experiences.
+          </p>
+
+          {status === "success" ? (
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                background: "rgba(34,197,94,0.08)",
+                border: "1px solid rgba(34,197,94,0.2)",
+                padding: "14px 28px",
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 500,
+                color: "#22c55e",
+              }}
+            >
+              <CheckCircle size={18} />
+              {message}
+            </div>
+          ) : (
+            <form
+              onSubmit={handleSubscribe}
+              style={{
+                display: "flex",
+                gap: 8,
+                maxWidth: 440,
+                margin: "0 auto",
+              }}
+              className="subscribe-form"
+            >
+              <input
+                type="email"
+                required
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (status === "error") setStatus("idle");
+                }}
+                style={{
+                  flex: 1,
+                  height: 48,
+                  padding: "0 16px",
+                  fontSize: 14,
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: 6,
+                  color: "#f5f5f0",
+                  outline: "none",
+                  transition: "border-color 0.2s",
+                }}
+                onFocus={(e) =>
+                  (e.target.style.borderColor = "rgba(201,169,110,0.5)")
+                }
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "rgba(255,255,255,0.1)")
+                }
+              />
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                style={{
+                  height: 48,
+                  padding: "0 24px",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase" as const,
+                  color: "#fff",
+                  background: "#c41e3a",
+                  border: "none",
+                  borderRadius: 6,
+                  cursor: status === "loading" ? "not-allowed" : "pointer",
+                  opacity: status === "loading" ? 0.7 : 1,
+                  transition: "background 0.2s, opacity 0.2s",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  whiteSpace: "nowrap" as const,
+                }}
+                onMouseEnter={(e) =>
+                  status !== "loading" &&
+                  ((e.target as HTMLElement).style.background = "#a01830")
+                }
+                onMouseLeave={(e) =>
+                  ((e.target as HTMLElement).style.background = "#c41e3a")
+                }
+              >
+                {status === "loading" ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : (
+                  <Mail size={14} />
+                )}
+                Subscribe
+              </button>
+            </form>
+          )}
+
+          {status === "error" && (
+            <p
+              style={{
+                marginTop: 12,
+                fontSize: 13,
+                color: "#c41e3a",
+              }}
+            >
+              {message}
+            </p>
+          )}
+
+          <p
+            style={{
+              marginTop: 20,
+              fontSize: 11,
+              color: "rgba(255,255,255,0.2)",
+            }}
+          >
+            No spam, ever. Unsubscribe anytime.
+          </p>
+        </Reveal>
+      </div>
+    </section>
   );
 }
 
@@ -1210,6 +1435,9 @@ export default function Home() {
             </Reveal>
           </div>
         </section>
+
+        {/* ══ SUBSCRIBE ════════════════════════════════════════════════════ */}
+        <SubscribeSection />
 
         {/* ══ LOCATION ═══════════════════════════════════════════════════════ */}
         <section

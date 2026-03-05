@@ -5,7 +5,7 @@ import { stripe } from "@/lib/stripe";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { eventId, fullName, email, phone, guests } = body;
+    const { eventId, fullName, email, phone, guests, subscribeToEmails } = body;
 
     if (!eventId || !fullName || !email || !phone) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -75,6 +75,18 @@ export async function POST(request: NextRequest) {
       where: { id: registration.id },
       data: { stripePaymentIntentId: paymentIntent.id },
     });
+
+    if (subscribeToEmails) {
+      const normalizedEmail = email.toLowerCase().trim();
+      const existing = await prisma.subscriber.findUnique({
+        where: { email: normalizedEmail },
+      });
+      if (!existing) {
+        await prisma.subscriber.create({
+          data: { email: normalizedEmail, name: fullName },
+        });
+      }
+    }
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
