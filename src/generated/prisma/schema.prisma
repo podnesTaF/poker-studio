@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Events ────────────────────────────────────────────────────────────────────
+
+model Event {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String?  @db.Text
+  date         DateTime
+  location     String?
+  priceInCents Int
+  maxSeats     Int?
+  published    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  images        EventImage[]
+  registrations Registration[]
+}
+
+model EventImage {
+  id      String @id @default(cuid())
+  eventId String
+  url     String
+  gcsPath String
+  order   Int    @default(0)
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+}
+
+// ─── Registrations ─────────────────────────────────────────────────────────────
+
+model Registration {
+  id                    String        @id @default(cuid())
+  eventId               String
+  fullName              String
+  email                 String
+  phone                 String
+  stripePaymentIntentId String?
+  paymentStatus         PaymentStatus @default(PENDING)
+  totalAmountInCents    Int
+  createdAt             DateTime      @default(now())
+
+  event  Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  guests RegistrationGuest[]
+
+  @@index([eventId])
+}
+
+model RegistrationGuest {
+  id             String  @id @default(cuid())
+  registrationId String
+  fullName       String
+  email          String?
+  phone          String?
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@index([registrationId])
+}
+
+// ─── Gallery (home page) ───────────────────────────────────────────────────────
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  url       String
+  gcsPath   String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+// ─── Site settings (hero video, about text, etc.) ──────────────────────────────
+
+model SiteSetting {
+  key   String @id
+  value String @db.Text
+}
+
+// ─── Enums ─────────────────────────────────────────────────────────────────────
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}

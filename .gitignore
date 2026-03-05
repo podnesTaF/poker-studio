@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# GCP key file (if using GOOGLE_APPLICATION_CREDENTIALS)
+google-key.json
+
 # vercel
 .vercel
 
