@@ -29,6 +29,7 @@ export default async function EditEventPage({
         id: event.id,
         title: event.title,
         slug: event.slug,
+        category: event.category,
         description: event.description,
         date: event.date.toISOString(),
         location: event.location,
