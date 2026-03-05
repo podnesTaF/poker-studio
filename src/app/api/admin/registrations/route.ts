@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     ];
   }
 
-  const [registrations, total, stats] = await Promise.all([
+  const [registrations, total, stats, paidCount, pendingCount, paidRevenue] = await Promise.all([
     prisma.registration.findMany({
       where,
       skip,
@@ -44,6 +44,12 @@ export async function GET(request: NextRequest) {
       _sum: { totalAmountInCents: true },
       _count: true,
     }),
+    prisma.registration.count({ where: { paymentStatus: "PAID" } }),
+    prisma.registration.count({ where: { paymentStatus: "PENDING" } }),
+    prisma.registration.aggregate({
+      where: { paymentStatus: "PAID" },
+      _sum: { totalAmountInCents: true },
+    }),
   ]);
 
   return NextResponse.json({
@@ -51,7 +57,9 @@ export async function GET(request: NextRequest) {
     pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     stats: {
       totalRegistrations: stats._count,
-      totalRevenueCents: stats._sum.totalAmountInCents ?? 0,
+      totalRevenueCents: paidRevenue._sum.totalAmountInCents ?? 0,
+      paidCount,
+      pendingCount,
     },
   });
 }
