@@ -24,6 +24,7 @@ type EventData = {
   description: string | null;
   date: string;
   location: string | null;
+  category: string | null;
   priceInCents: number;
   maxSeats: number | null;
   published: boolean;
@@ -44,6 +45,7 @@ export function EventForm({ event }: { event?: EventData }) {
     return d.toISOString().slice(0, 16);
   });
   const [location, setLocation] = useState(event?.location ?? "");
+  const [category, setCategory] = useState(event?.category ?? "");
   const [price, setPrice] = useState(() => (event ? (event.priceInCents / 100).toFixed(2) : ""));
   const [maxSeats, setMaxSeats] = useState(() => (event?.maxSeats ? String(event.maxSeats) : ""));
   const [published, setPublished] = useState(event?.published ?? false);
@@ -82,6 +84,7 @@ export function EventForm({ event }: { event?: EventData }) {
       description: description || null,
       date,
       location: location || null,
+      category: category || null,
       priceInCents: Math.round(parseFloat(price) * 100),
       maxSeats: maxSeats ? parseInt(maxSeats) : null,
       published,
@@ -291,7 +294,17 @@ export function EventForm({ event }: { event?: EventData }) {
                 </div>
 
                 <div>
-                  <label className={labelClass}>Price (€)</label>
+                  <label className={labelClass}>Category</label>
+                  <input
+                    className={inputClass}
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    placeholder="Tournament, Masterclass, Special…"
+                  />
+                </div>
+
+                <div>
+                  <label className={labelClass}>Price (£)</label>
                   <input
                     type="number"
                     step="0.01"

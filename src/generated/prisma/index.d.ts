@@ -1439,6 +1439,7 @@ export namespace Prisma {
     description: string | null
     date: Date | null
     location: string | null
+    category: string | null
     priceInCents: number | null
     maxSeats: number | null
     published: boolean | null
@@ -1453,6 +1454,7 @@ export namespace Prisma {
     description: string | null
     date: Date | null
     location: string | null
+    category: string | null
     priceInCents: number | null
     maxSeats: number | null
     published: boolean | null
@@ -1467,6 +1469,7 @@ export namespace Prisma {
     description: number
     date: number
     location: number
+    category: number
     priceInCents: number
     maxSeats: number
     published: number
@@ -1493,6 +1496,7 @@ export namespace Prisma {
     description?: true
     date?: true
     location?: true
+    category?: true
     priceInCents?: true
     maxSeats?: true
     published?: true
@@ -1507,6 +1511,7 @@ export namespace Prisma {
     description?: true
     date?: true
     location?: true
+    category?: true
     priceInCents?: true
     maxSeats?: true
     published?: true
@@ -1521,6 +1526,7 @@ export namespace Prisma {
     description?: true
     date?: true
     location?: true
+    category?: true
     priceInCents?: true
     maxSeats?: true
     published?: true
@@ -1622,6 +1628,7 @@ export namespace Prisma {
     description: string | null
     date: Date
     location: string | null
+    category: string | null
     priceInCents: number
     maxSeats: number | null
     published: boolean
@@ -1655,6 +1662,7 @@ export namespace Prisma {
     description?: boolean
     date?: boolean
     location?: boolean
+    category?: boolean
     priceInCents?: boolean
     maxSeats?: boolean
     published?: boolean
@@ -1672,6 +1680,7 @@ export namespace Prisma {
     description?: boolean
     date?: boolean
     location?: boolean
+    category?: boolean
     priceInCents?: boolean
     maxSeats?: boolean
     published?: boolean
@@ -1686,6 +1695,7 @@ export namespace Prisma {
     description?: boolean
     date?: boolean
     location?: boolean
+    category?: boolean
     priceInCents?: boolean
     maxSeats?: boolean
     published?: boolean
@@ -1700,6 +1710,7 @@ export namespace Prisma {
     description?: boolean
     date?: boolean
     location?: boolean
+    category?: boolean
     priceInCents?: boolean
     maxSeats?: boolean
     published?: boolean
@@ -1707,7 +1718,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "date" | "location" | "priceInCents" | "maxSeats" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "date" | "location" | "category" | "priceInCents" | "maxSeats" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | Event$imagesArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
@@ -1729,6 +1740,7 @@ export namespace Prisma {
       description: string | null
       date: Date
       location: string | null
+      category: string | null
       priceInCents: number
       maxSeats: number | null
       published: boolean
@@ -2165,6 +2177,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Event", 'String'>
     readonly date: FieldRef<"Event", 'DateTime'>
     readonly location: FieldRef<"Event", 'String'>
+    readonly category: FieldRef<"Event", 'String'>
     readonly priceInCents: FieldRef<"Event", 'Int'>
     readonly maxSeats: FieldRef<"Event", 'Int'>
     readonly published: FieldRef<"Event", 'Boolean'>
@@ -7954,6 +7967,7 @@ export namespace Prisma {
     description: 'description',
     date: 'date',
     location: 'location',
+    category: 'category',
     priceInCents: 'priceInCents',
     maxSeats: 'maxSeats',
     published: 'published',
@@ -8139,6 +8153,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Event"> | string | null
     date?: DateTimeFilter<"Event"> | Date | string
     location?: StringNullableFilter<"Event"> | string | null
+    category?: StringNullableFilter<"Event"> | string | null
     priceInCents?: IntFilter<"Event"> | number
     maxSeats?: IntNullableFilter<"Event"> | number | null
     published?: BoolFilter<"Event"> | boolean
@@ -8155,6 +8170,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     date?: SortOrder
     location?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
     priceInCents?: SortOrder
     maxSeats?: SortOrderInput | SortOrder
     published?: SortOrder
@@ -8174,6 +8190,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Event"> | string | null
     date?: DateTimeFilter<"Event"> | Date | string
     location?: StringNullableFilter<"Event"> | string | null
+    category?: StringNullableFilter<"Event"> | string | null
     priceInCents?: IntFilter<"Event"> | number
     maxSeats?: IntNullableFilter<"Event"> | number | null
     published?: BoolFilter<"Event"> | boolean
@@ -8190,6 +8207,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     date?: SortOrder
     location?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
     priceInCents?: SortOrder
     maxSeats?: SortOrderInput | SortOrder
     published?: SortOrder
@@ -8212,6 +8230,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Event"> | string | null
     date?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     location?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    category?: StringNullableWithAggregatesFilter<"Event"> | string | null
     priceInCents?: IntWithAggregatesFilter<"Event"> | number
     maxSeats?: IntNullableWithAggregatesFilter<"Event"> | number | null
     published?: BoolWithAggregatesFilter<"Event"> | boolean
@@ -8509,6 +8528,7 @@ export namespace Prisma {
     description?: string | null
     date: Date | string
     location?: string | null
+    category?: string | null
     priceInCents: number
     maxSeats?: number | null
     published?: boolean
@@ -8525,6 +8545,7 @@ export namespace Prisma {
     description?: string | null
     date: Date | string
     location?: string | null
+    category?: string | null
     priceInCents: number
     maxSeats?: number | null
     published?: boolean
@@ -8541,6 +8562,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -8557,6 +8579,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -8573,6 +8596,7 @@ export namespace Prisma {
     description?: string | null
     date: Date | string
     location?: string | null
+    category?: string | null
     priceInCents: number
     maxSeats?: number | null
     published?: boolean
@@ -8587,6 +8611,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -8601,6 +8626,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -8996,6 +9022,7 @@ export namespace Prisma {
     description?: SortOrder
     date?: SortOrder
     location?: SortOrder
+    category?: SortOrder
     priceInCents?: SortOrder
     maxSeats?: SortOrder
     published?: SortOrder
@@ -9015,6 +9042,7 @@ export namespace Prisma {
     description?: SortOrder
     date?: SortOrder
     location?: SortOrder
+    category?: SortOrder
     priceInCents?: SortOrder
     maxSeats?: SortOrder
     published?: SortOrder
@@ -9029,6 +9057,7 @@ export namespace Prisma {
     description?: SortOrder
     date?: SortOrder
     location?: SortOrder
+    category?: SortOrder
     priceInCents?: SortOrder
     maxSeats?: SortOrder
     published?: SortOrder
@@ -9835,6 +9864,7 @@ export namespace Prisma {
     description?: string | null
     date: Date | string
     location?: string | null
+    category?: string | null
     priceInCents: number
     maxSeats?: number | null
     published?: boolean
@@ -9850,6 +9880,7 @@ export namespace Prisma {
     description?: string | null
     date: Date | string
     location?: string | null
+    category?: string | null
     priceInCents: number
     maxSeats?: number | null
     published?: boolean
@@ -9881,6 +9912,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -9896,6 +9928,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -9911,6 +9944,7 @@ export namespace Prisma {
     description?: string | null
     date: Date | string
     location?: string | null
+    category?: string | null
     priceInCents: number
     maxSeats?: number | null
     published?: boolean
@@ -9926,6 +9960,7 @@ export namespace Prisma {
     description?: string | null
     date: Date | string
     location?: string | null
+    category?: string | null
     priceInCents: number
     maxSeats?: number | null
     published?: boolean
@@ -9981,6 +10016,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean
@@ -9996,6 +10032,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     priceInCents?: IntFieldUpdateOperationsInput | number
     maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
     published?: BoolFieldUpdateOperationsInput | boolean

@@ -47,6 +47,7 @@ export async function PUT(
   if (body.description !== undefined) data.description = body.description;
   if (body.date !== undefined) data.date = new Date(body.date);
   if (body.location !== undefined) data.location = body.location;
+  if (body.category !== undefined) data.category = body.category;
   if (body.priceInCents !== undefined) data.priceInCents = body.priceInCents;
   if (body.maxSeats !== undefined) data.maxSeats = body.maxSeats;
   if (body.published !== undefined) data.published = body.published;

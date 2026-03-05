@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { title, slug, description, date, location, priceInCents, maxSeats, published, images } =
+  const { title, slug, description, date, location, category, priceInCents, maxSeats, published, images } =
     body;
 
   if (!title || !slug || !date || priceInCents == null) {
@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
       description: description ?? null,
       date: new Date(date),
       location: location ?? null,
+      category: category ?? null,
       priceInCents,
       maxSeats: maxSeats ?? null,
       published: published ?? false,
