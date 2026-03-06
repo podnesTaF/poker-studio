@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans, Geist_Mono, Playfair_Display } from "next/font/google";
+import {
+  DM_Sans,
+  Geist_Mono,
+  Playfair_Display,
+  Space_Grotesk,
+} from "next/font/google";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
 
@@ -19,10 +24,15 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "Poker Studio | Private Events in Canary Wharf",
+  title: "KitchenVerse Studio | Experiences in Canary Wharf",
   description:
-    "Exclusive poker nights, masterclasses, wine tasting, and more in the heart of Canary Wharf, London.",
+    "Poker nights, cooking classes, business games, karaoke evenings, and pitch events — all under one roof in Canary Wharf, London.",
 };
 
 export default function RootLayout({
@@ -33,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dmSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
+        className={`${dmSans.variable} ${geistMono.variable} ${playfair.variable} ${spaceGrotesk.variable} antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Trash2, ExternalLink, Send, Loader2 } from "lucide-react";
 import { RichTextEditor } from "./RichTextEditor";
 import { ImageUpload, type ImageItem } from "./ImageUpload";
+import { CATEGORY_OPTIONS, getCategoryTheme } from "@/lib/categories";
 
 const SERIF_FONT = "var(--font-playfair), 'Playfair Display', Georgia, serif";
 
@@ -315,18 +316,48 @@ export function EventForm({ event }: { event?: EventData }) {
                     className={inputClass}
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Poker Studio, Room 1"
+                    placeholder="KitchenVerse Studio, Canary Wharf"
                   />
                 </div>
 
                 <div>
                   <label className={labelClass}>Category</label>
-                  <input
+                  <select
                     className={inputClass}
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    placeholder="Tournament, Masterclass, Special…"
-                  />
+                    style={{ cursor: "pointer" }}
+                  >
+                    <option value="">Select a category…</option>
+                    {Object.entries(
+                      CATEGORY_OPTIONS.reduce<Record<string, string[]>>(
+                        (acc, opt) => {
+                          (acc[opt.group] ??= []).push(opt.value);
+                          return acc;
+                        },
+                        {},
+                      ),
+                    ).map(([group, options]) => (
+                      <optgroup key={group} label={group}>
+                        {options.map((v) => (
+                          <option key={v} value={v}>
+                            {v}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                  {category && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <span
+                        className="w-2.5 h-2.5 rounded-full shrink-0"
+                        style={{ background: getCategoryTheme(category).primary }}
+                      />
+                      <span className="text-[11px] text-[#8c7f6e]">
+                        Theme: <strong style={{ color: getCategoryTheme(category).primary }}>{getCategoryTheme(category).label}</strong>
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div>

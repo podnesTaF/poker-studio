@@ -2,38 +2,46 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X, MapPin, Mail, Phone, CheckCircle, Loader2 } from "lucide-react";
+import {
+  Menu,
+  X,
+  MapPin,
+  Mail,
+  Phone,
+  CheckCircle,
+  Loader2,
+  Spade,
+  ChefHat,
+  Gamepad2,
+  Mic,
+  Lightbulb,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { getCategoryTheme, SHOWCASE_CATEGORIES } from "@/lib/categories";
+import type { LucideIcon } from "lucide-react";
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   Gallery images — update paths to match your files in public/images/
-   Horizontal: poker-table, table-tv, fruit-wine-table
-   Vertical: rename gallery-1 … gallery-5 to your actual filenames
-   ═══════════════════════════════════════════════════════════════════════════ */
 const galleryImages = [
-  {
-    src: "/images/poker-table.jpg",
-    horizontal: true,
-    alt: "Poker table setup",
-  },
+  { src: "/images/poker-table.jpg", horizontal: true, alt: "Poker table setup" },
   { src: "/images/cards-glasses.jpg", horizontal: false, alt: "Poker evening" },
   { src: "/images/cards-poker.jpg", horizontal: false, alt: "At the table" },
   { src: "/images/table-tv.jpg", horizontal: true, alt: "Lounge with screens" },
   { src: "/images/wine-table.jpg", horizontal: false, alt: "Wine & table" },
-  {
-    src: "/images/fruit-wine-table.jpg",
-    horizontal: true,
-    alt: "Wine & refreshments",
-  },
+  { src: "/images/fruit-wine-table.jpg", horizontal: true, alt: "Wine & refreshments" },
   { src: "/images/table-light.jpg", horizontal: false, alt: "Studio interior" },
-  {
-    src: "/images/cards-table.jpg",
-    horizontal: false,
-    alt: "Cards on the table",
-  },
+  { src: "/images/cards-table.jpg", horizontal: false, alt: "Cards on the table" },
 ];
 
-// ─── Animated counter ────────────────────────────────────────────────────────
+const ICON_MAP: Record<string, LucideIcon> = {
+  Spade,
+  ChefHat,
+  Gamepad2,
+  Mic,
+  Lightbulb,
+  Sparkles,
+};
+
 function CountUp({
   to,
   suffix = "",
@@ -78,7 +86,6 @@ function CountUp({
   );
 }
 
-// ─── Reveal wrapper ──────────────────────────────────────────────────────────
 function Reveal({
   children,
   delay = 0,
@@ -131,7 +138,6 @@ function Reveal({
   );
 }
 
-// ─── Nav ─────────────────────────────────────────────────────────────────────
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -150,7 +156,6 @@ function Nav() {
     { href: "#events", label: "Events" },
     { href: "#about", label: "About" },
     { href: "#gallery", label: "Gallery" },
-    { href: "#location", label: "Location" },
     { href: "#contact", label: "Contact" },
   ];
 
@@ -183,16 +188,33 @@ function Nav() {
       >
         <Link
           href="/"
-          className="font-heading"
+          className="font-display"
           style={{
-            fontSize: 20,
-            fontWeight: 600,
+            fontSize: 18,
+            fontWeight: 700,
             color: "#f5f5f0",
             textDecoration: "none",
-            letterSpacing: "0.04em",
+            letterSpacing: "0.02em",
           }}
         >
-          POKER <span style={{ color: "#c9a96e" }}>STUDIO</span>
+          KITCHEN
+          <span
+            className="brand-gradient-text"
+            style={{ fontWeight: 700 }}
+          >
+            VERSE
+          </span>{" "}
+          <span
+            className="font-heading"
+            style={{
+              fontStyle: "italic",
+              color: "#c9a96e",
+              fontWeight: 400,
+              fontSize: 16,
+            }}
+          >
+            Studio
+          </span>
         </Link>
 
         <ul
@@ -233,7 +255,7 @@ function Nav() {
         </ul>
 
         <Link
-          href="#contact"
+          href="/events"
           className="nav-cta"
           style={{
             fontSize: 11,
@@ -253,7 +275,7 @@ function Nav() {
             ((e.target as HTMLElement).style.background = "#c41e3a")
           }
         >
-          Book Now
+          Explore Events
         </Link>
 
         <button
@@ -273,15 +295,10 @@ function Nav() {
             color: "#f5f5f0",
           }}
         >
-          {menuOpen ? (
-            <X size={22} strokeWidth={2} />
-          ) : (
-            <Menu size={22} strokeWidth={2} />
-          )}
+          {menuOpen ? <X size={22} strokeWidth={2} /> : <Menu size={22} strokeWidth={2} />}
         </button>
       </div>
 
-      {/* Mobile overlay */}
       <div
         className={`nav-mobile-menu ${menuOpen ? "nav-mobile-menu-open" : ""}`}
         aria-hidden={!menuOpen}
@@ -328,7 +345,7 @@ function Nav() {
             ))}
           </ul>
           <Link
-            href="#contact"
+            href="/events"
             onClick={closeMenu}
             style={{
               display: "inline-flex",
@@ -349,7 +366,7 @@ function Nav() {
             onMouseEnter={(e) => (e.currentTarget.style.background = "#a01830")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#c41e3a")}
           >
-            Book Now
+            Explore Events
           </Link>
         </div>
       </div>
@@ -357,17 +374,21 @@ function Nav() {
   );
 }
 
-// ─── Marquee ─────────────────────────────────────────────────────────────────
 function Marquee() {
   const base = [
     "Poker Nights",
-    "Masterclasses",
+    "Cooking Classes",
+    "Business Games",
+    "Karaoke",
+    "Startup Pitches",
     "Wine Tasting",
-    "Mafia Games",
     "Canary Wharf",
     "Private Events",
   ];
   const items = [...base, ...base, ...base, ...base];
+
+  const colors = ["#c41e3a", "#e07a5f", "#3b82f6", "#a855f7", "#10b981", "#c9a96e", "#c9a96e", "#c41e3a"];
+  const allColors = [...colors, ...colors, ...colors, ...colors];
 
   return (
     <div
@@ -396,7 +417,7 @@ function Marquee() {
             }}
           >
             {item}
-            <span style={{ marginLeft: 40, color: "#c41e3a", opacity: 0.5 }}>
+            <span style={{ marginLeft: 40, color: allColors[i], opacity: 0.5 }}>
               ✦
             </span>
           </span>
@@ -406,7 +427,6 @@ function Marquee() {
   );
 }
 
-// ─── Subscribe Section ────────────────────────────────────────────────────────
 function SubscribeSection() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -459,7 +479,7 @@ function SubscribeSection() {
           height: 700,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(196,30,58,0.06) 0%, transparent 60%)",
+            "radial-gradient(circle, rgba(168,85,247,0.05) 0%, rgba(196,30,58,0.03) 40%, transparent 60%)",
           pointerEvents: "none",
         }}
       />
@@ -474,10 +494,7 @@ function SubscribeSection() {
         }}
       >
         <Reveal>
-          <span
-            className="tag"
-            style={{ marginBottom: 24, display: "inline-flex" }}
-          >
+          <span className="tag" style={{ marginBottom: 24, display: "inline-flex" }}>
             Stay Updated
           </span>
           <h2
@@ -491,7 +508,7 @@ function SubscribeSection() {
             }}
           >
             Never miss an{" "}
-            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>event</em>
+            <em style={{ fontStyle: "italic", color: "#c9a96e" }}>experience</em>
           </h2>
           <p
             style={{
@@ -503,8 +520,8 @@ function SubscribeSection() {
               margin: "0 auto 36px",
             }}
           >
-            Subscribe to get notified when we announce new events,
-            exclusive evenings, and special experiences.
+            Subscribe to get notified about new events across all our worlds
+            — poker, cooking, karaoke, and more.
           </p>
 
           {status === "success" ? (
@@ -605,13 +622,7 @@ function SubscribeSection() {
           )}
 
           {status === "error" && (
-            <p
-              style={{
-                marginTop: 12,
-                fontSize: 13,
-                color: "#c41e3a",
-              }}
-            >
+            <p style={{ marginTop: 12, fontSize: 13, color: "#c41e3a" }}>
               {message}
             </p>
           )}
@@ -631,7 +642,6 @@ function SubscribeSection() {
   );
 }
 
-// ─── Event type from API ─────────────────────────────────────────────────────
 type ApiEvent = {
   id: string;
   title: string;
@@ -658,7 +668,6 @@ function formatEventDate(iso: string) {
   };
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────
 export default function Home() {
   const [events, setEvents] = useState<ApiEvent[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
@@ -670,6 +679,7 @@ export default function Home() {
       .catch(() => {})
       .finally(() => setEventsLoading(false));
   }, []);
+
   return (
     <>
       <Nav />
@@ -686,7 +696,6 @@ export default function Home() {
             overflow: "hidden",
           }}
         >
-          {/* Video background */}
           <div style={{ position: "absolute", inset: 0 }}>
             <video
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
@@ -714,7 +723,7 @@ export default function Home() {
                 width: 480,
                 height: 480,
                 background:
-                  "radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 70%)",
+                  "radial-gradient(circle, rgba(168,85,247,0.10) 0%, transparent 70%)",
               }}
             />
             <div
@@ -725,13 +734,24 @@ export default function Home() {
                 width: 320,
                 height: 320,
                 background:
-                  "radial-gradient(circle, rgba(196,30,58,0.08) 0%, transparent 70%)",
+                  "radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%)",
                 animationDelay: "3.5s",
+              }}
+            />
+            <div
+              className="hero-glow"
+              style={{
+                top: "40%",
+                left: "50%",
+                width: 400,
+                height: 400,
+                background:
+                  "radial-gradient(circle, rgba(224,122,95,0.06) 0%, transparent 70%)",
+                animationDelay: "6s",
               }}
             />
           </div>
 
-          {/* Floating badge */}
           <div className="float-badge">
             <span
               style={{
@@ -763,7 +783,6 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Hero content */}
           <div
             style={{
               position: "relative",
@@ -783,40 +802,50 @@ export default function Home() {
             >
               <div>
                 <p
+                  className="font-display"
                   style={{
                     fontSize: 11,
                     fontWeight: 700,
                     letterSpacing: "0.3em",
                     textTransform: "uppercase",
-                    color: "#c9a96e",
+                    color: "rgba(255,255,255,0.45)",
                     marginBottom: 20,
                   }}
                 >
-                  Exclusive Private Events
+                  A Universe of Experiences
                 </p>
-                <h1
-                  className="font-heading"
-                  style={{
-                    fontSize: "clamp(52px, 8vw, 110px)",
-                    fontWeight: 400,
-                    lineHeight: 0.95,
-                    letterSpacing: "-0.02em",
-                    color: "#fff",
-                    marginBottom: 32,
-                  }}
-                >
-                  Poker
-                  <br />
-                  <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                <h1 style={{ marginBottom: 28, lineHeight: 0.95 }}>
+                  <span
+                    className="font-display brand-gradient-text"
+                    style={{
+                      fontSize: "clamp(48px, 8vw, 110px)",
+                      fontWeight: 700,
+                      letterSpacing: "-0.02em",
+                      display: "block",
+                    }}
+                  >
+                    KitchenVerse
+                  </span>
+                  <span
+                    className="font-heading"
+                    style={{
+                      fontSize: "clamp(40px, 6vw, 88px)",
+                      fontWeight: 400,
+                      fontStyle: "italic",
+                      color: "#c9a96e",
+                      display: "block",
+                      marginTop: -4,
+                    }}
+                  >
                     Studio
-                  </em>
+                  </span>
                 </h1>
                 <div
                   style={{
-                    borderLeft: "2px solid #c41e3a",
+                    borderLeft: "2px solid #c9a96e",
                     paddingLeft: 20,
-                    marginBottom: 40,
-                    maxWidth: 480,
+                    marginBottom: 28,
+                    maxWidth: 520,
                   }}
                 >
                   <p
@@ -827,23 +856,16 @@ export default function Home() {
                       lineHeight: 1.75,
                     }}
                   >
-                    Premium poker nights, masterclasses, and curated experiences
-                    in the heart of Canary Wharf.
+                    Poker nights, cooking classes, business games, karaoke
+                    evenings, and startup pitches — all under one roof in the
+                    heart of Canary Wharf.
                   </p>
                 </div>
+
                 <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-                  <Link href="#events" className="btn-primary">
+                  <Link href="/events" className="btn-primary">
                     View Events
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
+                    <ArrowRight size={16} strokeWidth={2.5} />
                   </Link>
                   <Link href="#about" className="btn-ghost">
                     Learn More
@@ -851,7 +873,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Meta info — desktop only */}
               <div
                 className="hero-meta"
                 style={{
@@ -863,8 +884,8 @@ export default function Home() {
                 }}
               >
                 {[
-                  { label: "Format", value: "Private" },
-                  { label: "Games", value: "Hold'em · Omaha" },
+                  { label: "Format", value: "Private Events" },
+                  { label: "Events", value: "Private" },
                   { label: "Dress", value: "Smart Casual" },
                 ].map((item) => (
                   <div
@@ -905,9 +926,166 @@ export default function Home() {
 
         <Marquee />
 
-        {/* ══ UPCOMING EVENTS ════════════════════════════════════════════════ */}
+        {/* ══ EVENT TYPES ══════════════════════════════════════════════════ */}
         <section
           id="events"
+          style={{
+            background: "#0f0f0f",
+            padding: "100px 0",
+            position: "relative",
+            overflow: "hidden",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
+          <div className="dot-grid" style={{ opacity: 0.3 }} />
+          <div
+            style={{
+              position: "absolute",
+              bottom: -200,
+              right: -200,
+              width: 600,
+              height: 600,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(168,85,247,0.04) 0%, transparent 65%)",
+              pointerEvents: "none",
+            }}
+          />
+
+          <div
+            style={{
+              maxWidth: 1200,
+              margin: "0 auto",
+              padding: "0 24px",
+              position: "relative",
+            }}
+          >
+            <Reveal>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  marginBottom: 64,
+                }}
+              >
+                <span className="tag tag-gold" style={{ marginBottom: 20 }}>
+                  What We Do
+                </span>
+                <h2
+                  className="font-heading"
+                  style={{
+                    fontSize: "clamp(36px, 5vw, 66px)",
+                    fontWeight: 400,
+                    color: "#f5f5f0",
+                    lineHeight: 1.05,
+                  }}
+                >
+                  Pick your{" "}
+                  <em
+                    className="brand-gradient-text font-heading"
+                    style={{ fontStyle: "italic" }}
+                  >
+                    evening
+                  </em>
+                </h2>
+                <p
+                  style={{
+                    marginTop: 16,
+                    maxWidth: 500,
+                    fontSize: 15,
+                    lineHeight: 1.75,
+                    color: "rgba(255,255,255,0.45)",
+                  }}
+                >
+                  From poker to pitches, every event is crafted for a unique
+                  experience. Find the one that speaks to you.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="bento-grid">
+              {SHOWCASE_CATEGORIES.map((cat, i) => {
+                const theme = getCategoryTheme(cat.key);
+                const Icon = ICON_MAP[cat.iconName] ?? Sparkles;
+                return (
+                  <Reveal key={cat.key} delay={i * 60}>
+                    <div
+                      className="bento-card"
+                      style={
+                        {
+                          "--cat-gradient": theme.gradient,
+                          height: "100%",
+                        } as React.CSSProperties
+                      }
+                    >
+                      <div
+                        className="bento-card-glow"
+                        style={{
+                          background: `radial-gradient(circle at 20% 20%, ${theme.glow}, transparent 60%)`,
+                        }}
+                      />
+                      <div style={{ position: "relative" }}>
+                        <div
+                          style={{
+                            width: 44,
+                            height: 44,
+                            borderRadius: 12,
+                            background: theme.bgSubtle,
+                            border: `1px solid ${theme.borderSubtle}`,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginBottom: 20,
+                          }}
+                        >
+                          <Icon size={20} style={{ color: theme.primary }} />
+                        </div>
+                        <h3
+                          className="font-heading"
+                          style={{
+                            fontSize: 20,
+                            fontWeight: 500,
+                            color: "#f5f5f0",
+                            marginBottom: 4,
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          {cat.label}
+                        </h3>
+                        <p
+                          style={{
+                            fontSize: 12,
+                            fontStyle: "italic",
+                            color: theme.secondary,
+                            marginBottom: 12,
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {cat.tagline}
+                        </p>
+                        <p
+                          style={{
+                            fontSize: 13,
+                            color: "rgba(255,255,255,0.4)",
+                            lineHeight: 1.7,
+                          }}
+                        >
+                          {cat.description}
+                        </p>
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ══ UPCOMING EVENTS ════════════════════════════════════════════════ */}
+        <section
+          id="upcoming"
           style={{
             background: "#09090b",
             padding: "100px 0",
@@ -925,7 +1103,7 @@ export default function Home() {
               height: 600,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, rgba(196,30,58,0.05) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 65%)",
               pointerEvents: "none",
             }}
           />
@@ -960,9 +1138,9 @@ export default function Home() {
                     lineHeight: 1.05,
                   }}
                 >
-                  Closest{" "}
+                  What&apos;s{" "}
                   <em style={{ fontStyle: "italic", color: "#c41e3a" }}>
-                    Events
+                    next
                   </em>
                 </h2>
                 <p
@@ -974,8 +1152,8 @@ export default function Home() {
                     color: "rgba(255,255,255,0.45)",
                   }}
                 >
-                  Secure your seat at our next private evening. Limited
-                  availability.
+                  Secure your spot at our upcoming experiences.
+                  Limited availability across all worlds.
                 </p>
               </div>
             </Reveal>
@@ -1022,13 +1200,8 @@ export default function Home() {
                 >
                   No upcoming events
                 </p>
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: "rgba(255,255,255,0.25)",
-                  }}
-                >
-                  Check back soon for new events.
+                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.25)" }}>
+                  Check back soon — new experiences are always being crafted.
                 </p>
               </div>
             ) : (
@@ -1046,6 +1219,7 @@ export default function Home() {
                   const plainDesc = ev.description
                     ?.replace(/<[^>]*>/g, "")
                     .slice(0, 120);
+                  const theme = getCategoryTheme(ev.category);
 
                   return (
                     <Reveal key={ev.id} delay={i * 100}>
@@ -1053,13 +1227,32 @@ export default function Home() {
                         href={`/events/${ev.slug}`}
                         style={{ textDecoration: "none", display: "block" }}
                       >
-                        <article className="event-card">
+                        <article
+                          className="event-card"
+                          style={
+                            {
+                              "--cat-gradient": theme.gradient,
+                            } as React.CSSProperties
+                          }
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              inset: 0,
+                              background: `radial-gradient(circle at 90% 10%, ${theme.glow}, transparent 50%)`,
+                              pointerEvents: "none",
+                              opacity: 0,
+                              transition: "opacity 0.4s",
+                            }}
+                            className="event-card-glow"
+                          />
                           <div
                             style={{
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "space-between",
                               marginBottom: 20,
+                              position: "relative",
                             }}
                           >
                             <div>
@@ -1079,7 +1272,7 @@ export default function Home() {
                                 style={{
                                   fontSize: 28,
                                   fontWeight: 400,
-                                  color: "#c9a96e",
+                                  color: theme.secondary,
                                   lineHeight: 1.2,
                                 }}
                               >
@@ -1094,9 +1287,10 @@ export default function Home() {
                                   letterSpacing: "0.16em",
                                   textTransform: "uppercase",
                                   padding: "4px 10px",
-                                  background: "rgba(196,30,58,0.08)",
-                                  color: "#c41e3a",
-                                  border: "1px solid rgba(196,30,58,0.2)",
+                                  background: theme.bgSubtle,
+                                  color: theme.primary,
+                                  border: `1px solid ${theme.borderSubtle}`,
+                                  borderRadius: 100,
                                 }}
                               >
                                 {ev.category}
@@ -1105,8 +1299,11 @@ export default function Home() {
                           </div>
 
                           <div
-                            className="hr-gold"
-                            style={{ marginBottom: 20 }}
+                            style={{
+                              height: 1,
+                              background: `linear-gradient(90deg, transparent, ${theme.borderSubtle} 40%, transparent)`,
+                              marginBottom: 20,
+                            }}
                           />
 
                           <h3
@@ -1117,6 +1314,7 @@ export default function Home() {
                               color: "#f5f5f0",
                               marginBottom: 10,
                               lineHeight: 1.3,
+                              position: "relative",
                             }}
                           >
                             {ev.title}
@@ -1131,8 +1329,8 @@ export default function Home() {
                               }}
                             >
                               {plainDesc}
-                              {(ev.description?.replace(/<[^>]*>/g, "")
-                                .length ?? 0) > 120
+                              {(ev.description?.replace(/<[^>]*>/g, "").length ??
+                                0) > 120
                                 ? "…"
                                 : ""}
                             </p>
@@ -1143,6 +1341,7 @@ export default function Home() {
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "space-between",
+                              position: "relative",
                             }}
                           >
                             <span
@@ -1150,7 +1349,7 @@ export default function Home() {
                               style={{
                                 fontSize: 24,
                                 fontWeight: 500,
-                                color: "#c9a96e",
+                                color: theme.secondary,
                               }}
                             >
                               {price}
@@ -1161,23 +1360,14 @@ export default function Home() {
                                 fontWeight: 700,
                                 letterSpacing: "0.14em",
                                 textTransform: "uppercase",
-                                color: "#c41e3a",
+                                color: theme.primary,
                                 display: "flex",
                                 alignItems: "center",
                                 gap: 6,
                               }}
                             >
                               View
-                              <svg
-                                width="14"
-                                height="14"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                              >
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                              </svg>
+                              <ArrowRight size={14} strokeWidth={2.5} />
                             </span>
                           </div>
                         </article>
@@ -1186,6 +1376,22 @@ export default function Home() {
                   );
                 })}
               </div>
+            )}
+
+            {/* View All link */}
+            {!eventsLoading && (
+              <Reveal delay={300}>
+                <div style={{ textAlign: "center", marginTop: 48 }}>
+                  <Link
+                    href="/events"
+                    className="btn-ghost"
+                    style={{ display: "inline-flex", gap: 10 }}
+                  >
+                    View All Events
+                    <ArrowRight size={14} strokeWidth={2} />
+                  </Link>
+                </div>
+              </Reveal>
             )}
           </div>
         </section>
@@ -1211,7 +1417,7 @@ export default function Home() {
               height: 600,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(224,122,95,0.05) 0%, transparent 65%)",
               pointerEvents: "none",
             }}
           />
@@ -1239,7 +1445,7 @@ export default function Home() {
                     className="tag tag-gold"
                     style={{ marginBottom: 24, display: "inline-flex" }}
                   >
-                    What Happens Here
+                    The Studio
                   </span>
                   <h2
                     className="font-heading"
@@ -1251,10 +1457,10 @@ export default function Home() {
                       color: "#f5f5f0",
                     }}
                   >
-                    Private evenings
+                    One studio,
                     <br />
                     <em style={{ fontStyle: "italic", color: "#c41e3a" }}>
-                      curated for you
+                      every kind of evening
                     </em>
                   </h2>
                 </Reveal>
@@ -1273,9 +1479,10 @@ export default function Home() {
                         color: "rgba(255,255,255,0.5)",
                       }}
                     >
-                      Poker Studio is more than a card room. It&apos;s a private
-                      venue where strategy, culture, and connection come
-                      together over premium experiences.
+                      KitchenVerse Studio is a multi-experience venue in Canary
+                      Wharf where creativity, strategy, and connection come
+                      together. Many event categories live under one roof — each
+                      crafted to deliver an unforgettable evening.
                     </p>
                     <p
                       style={{
@@ -1284,72 +1491,102 @@ export default function Home() {
                         color: "rgba(255,255,255,0.5)",
                       }}
                     >
-                      From competitive tournaments to relaxed wine tastings,
-                      every event is crafted to deliver an evening worth
-                      remembering.
+                      Whether you&apos;re here to test your poker face, learn a
+                      new recipe, pitch your next big idea, or simply sing your
+                      heart out — every visit is a new chapter.
                     </p>
+                  </div>
+                </Reveal>
+
+                <Reveal delay={200}>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: 20,
+                      marginTop: 40,
+                    }}
+                  >
+                    {[
+                      { number: 5, suffix: "+", label: "Event Types" },
+                      { number: 50, suffix: "+", label: "Events Hosted" },
+                    ].map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="stat-card"
+                        style={{
+                          border: "1px solid rgba(255,255,255,0.06)",
+                        }}
+                      >
+                        <p
+                          className="font-heading"
+                          style={{
+                            fontSize: 36,
+                            fontWeight: 400,
+                            color: "#c9a96e",
+                            lineHeight: 1,
+                            marginBottom: 6,
+                          }}
+                        >
+                          <CountUp to={stat.number} suffix={stat.suffix} />
+                        </p>
+                        <p
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 600,
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                            color: "rgba(255,255,255,0.35)",
+                          }}
+                        >
+                          {stat.label}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </Reveal>
               </div>
 
               <Reveal delay={120} direction="left">
                 <div>
-                  {[
-                    {
-                      name: "Poker Nights",
-                      desc: "Weekly tournaments and cash games in an intimate, premium setting with professional dealers.",
-                    },
-                    {
-                      name: "Poker Masterclasses",
-                      desc: "Learn from professionals — from fundamentals to advanced strategy and table reading.",
-                    },
-                    {
-                      name: "Wine Tasting",
-                      desc: "Curated wine selections paired with an evening of cards and conversation.",
-                    },
-                    {
-                      name: "Mafia Games",
-                      desc: "Social deduction and strategy in a thrilling group setting. Perfect for team events.",
-                    },
-                    {
-                      name: "Business Classes",
-                      desc: "Networking events that blend professional development with strategic gameplay.",
-                    },
-                  ].map((item) => (
-                    <div key={item.name} className="activity-item">
-                      <div
-                        style={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: "50%",
-                          background: "#c41e3a",
-                          flexShrink: 0,
-                          marginTop: 7,
-                        }}
-                      />
-                      <div>
-                        <span
+                  {SHOWCASE_CATEGORIES.map((cat) => {
+                    const theme = getCategoryTheme(cat.key);
+                    return (
+                      <div key={cat.key} className="activity-item">
+                        <div
                           style={{
-                            fontWeight: 600,
-                            color: "#f5f5f0",
-                            fontSize: 15,
+                            width: 6,
+                            height: 6,
+                            borderRadius: "50%",
+                            background: theme.primary,
+                            flexShrink: 0,
+                            marginTop: 7,
                           }}
-                        >
-                          {item.name}
-                        </span>
-                        <p
-                          style={{
-                            marginTop: 4,
-                            fontSize: 13,
-                            color: "rgba(255,255,255,0.4)",
-                            lineHeight: 1.6,
-                          }}
-                        >
-                          {item.desc}
-                        </p>
+                        />
+                        <div>
+                          <span
+                            style={{
+                              fontWeight: 600,
+                              color: "#f5f5f0",
+                              fontSize: 15,
+                            }}
+                          >
+                            {cat.label}
+                          </span>
+                          <p
+                            style={{
+                              marginTop: 4,
+                              fontSize: 13,
+                              color: "rgba(255,255,255,0.4)",
+                              lineHeight: 1.6,
+                            }}
+                          >
+                            {cat.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </Reveal>
             </div>
@@ -1436,7 +1673,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ══ SUBSCRIBE ════════════════════════════════════════════════════ */}
         <SubscribeSection />
 
         {/* ══ LOCATION ═══════════════════════════════════════════════════════ */}
@@ -1561,13 +1797,13 @@ export default function Home() {
                   }}
                 >
                   {[
-                    "Private Venue",
-                    "Full Bar",
-                    "Professional Tables",
-                    "VIP Lounge",
+                    { label: "Private Venue", color: "#c41e3a" },
+                    { label: "Full Kitchen", color: "#e07a5f" },
+                    { label: "Sound System", color: "#a855f7" },
+                    { label: "VIP Lounge", color: "#c9a96e" },
                   ].map((f) => (
                     <div
-                      key={f}
+                      key={f.label}
                       style={{
                         background: "rgba(255,255,255,0.04)",
                         border: "1px solid rgba(255,255,255,0.08)",
@@ -1581,8 +1817,8 @@ export default function Home() {
                         letterSpacing: "0.04em",
                       }}
                     >
-                      <span style={{ color: "#c41e3a", fontSize: 8 }}>●</span>
-                      {f}
+                      <span style={{ color: f.color, fontSize: 8 }}>●</span>
+                      {f.label}
                     </div>
                   ))}
                 </div>
@@ -1677,7 +1913,9 @@ export default function Home() {
               >
                 Ready to
                 <br />
-                <em style={{ fontStyle: "italic", color: "#c9a96e" }}>play?</em>
+                <em style={{ fontStyle: "italic", color: "#c9a96e" }}>
+                  join?
+                </em>
               </h2>
               <p
                 style={{
@@ -1687,9 +1925,9 @@ export default function Home() {
                   marginBottom: 40,
                 }}
               >
-                Book your seat or get in touch with any questions.
+                Book your seat at our next experience or reach out with questions.
                 <br />
-                Private events available upon request.
+                Private events and corporate bookings available.
               </p>
 
               <div
@@ -1794,7 +2032,6 @@ export default function Home() {
         </section>
       </main>
 
-      {/* ══ FOOTER ═══════════════════════════════════════════════════════════ */}
       <footer
         style={{
           background: "#09090b",
@@ -1814,18 +2051,32 @@ export default function Home() {
           }}
         >
           <span
-            className="font-heading"
+            className="font-display"
             style={{
-              fontSize: 16,
-              fontWeight: 600,
+              fontSize: 14,
+              fontWeight: 700,
               color: "#f5f5f0",
-              letterSpacing: "0.04em",
+              letterSpacing: "0.02em",
             }}
           >
-            POKER <span style={{ color: "#c9a96e" }}>STUDIO</span>
+            KITCHEN
+            <span className="brand-gradient-text" style={{ fontWeight: 700 }}>
+              VERSE
+            </span>{" "}
+            <span
+              className="font-heading"
+              style={{
+                fontStyle: "italic",
+                color: "#c9a96e",
+                fontWeight: 400,
+                fontSize: 13,
+              }}
+            >
+              Studio
+            </span>
           </span>
           <p style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>
-            Private Events · Canary Wharf, London · © {new Date().getFullYear()}
+            Experiences · Canary Wharf, London · © {new Date().getFullYear()}
           </p>
         </div>
       </footer>

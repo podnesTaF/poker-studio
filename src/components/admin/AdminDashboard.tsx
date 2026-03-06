@@ -22,7 +22,9 @@ import {
   Pencil,
   CalendarDays,
   ImageIcon,
+  Tag,
 } from "lucide-react";
+import { getCategoryTheme } from "@/lib/categories";
 
 type EventRow = {
   id: string;
@@ -31,6 +33,7 @@ type EventRow = {
   description: string | null;
   date: string;
   location: string | null;
+  category: string | null;
   priceInCents: number;
   maxSeats: number | null;
   published: boolean;
@@ -138,8 +141,24 @@ function EventRowItem({
           </div>
         )}
       </td>
+      <td className="p-3.5">
+        {event.category ? (() => {
+          const theme = getCategoryTheme(event.category);
+          return (
+            <span
+              className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-[0.1em] uppercase px-2.5 py-1 rounded-full whitespace-nowrap"
+              style={{ color: theme.primary, background: theme.bgSubtle, border: `1px solid ${theme.borderSubtle}` }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: theme.primary }} />
+              {event.category}
+            </span>
+          );
+        })() : (
+          <span className="text-[11px] text-[rgba(255,255,255,0.25)]">—</span>
+        )}
+      </td>
       <td className="p-3.5 text-[13px] text-right">
-        <span className="font-semibold text-[#c9a96e]">€{(event.priceInCents / 100).toFixed(0)}</span>
+        <span className="font-semibold text-[#c9a96e]">£{(event.priceInCents / 100).toFixed(0)}</span>
       </td>
       <td className="p-3.5 text-[13px] text-center text-[rgba(255,255,255,0.5)]">{event.maxSeats ?? "∞"}</td>
       <td className="p-3.5 text-[13px] text-center font-semibold text-[#f5f5f0]">{event._count.registrations}</td>
@@ -221,7 +240,7 @@ function RegistrationRowItem({ reg }: { reg: RegistrationRow }) {
           <StatusBadge status={reg.paymentStatus} />
         </td>
         <td className="p-3.5 text-[13px] text-right">
-          <span className="font-semibold text-[#c9a96e]">€{(reg.totalAmountInCents / 100).toFixed(0)}</span>
+          <span className="font-semibold text-[#c9a96e]">£{(reg.totalAmountInCents / 100).toFixed(0)}</span>
         </td>
         <td className="p-3.5 text-[13px] text-center text-[rgba(255,255,255,0.5)]">
           {reg.guests.length > 0 ? reg.guests.length + 1 : 1}
@@ -394,10 +413,10 @@ export function AdminDashboard({ userEmail }: { userEmail: string }) {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2.5">
                 <div className="w-7 h-7 rounded bg-[#c41e3a] flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">P</span>
+                  <span className="text-white text-xs font-bold">K</span>
                 </div>
                 <span className="text-[16px] font-light text-[#f5f5f0]" style={{ fontFamily: SERIF_FONT }}>
-                  Poker Studio
+                  KitchenVerse Studio
                 </span>
               </div>
               <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#c41e3a] bg-[rgba(196,30,58,0.1)] border border-[rgba(196,30,58,0.35)] px-3 py-0.5 rounded-full">
@@ -448,7 +467,7 @@ export function AdminDashboard({ userEmail }: { userEmail: string }) {
                 <StatCard icon={<CalendarDays size={14} />} label="Total Events" value={String(events.length)} />
                 <StatCard icon={<Eye size={14} />} label="Published" value={String(publishedEvents)} />
                 <StatCard icon={<Users size={14} />} label="Total Registrations" value={String(totalRegCount)} />
-                <StatCard icon={<CreditCard size={14} />} label="Revenue" value={`€${(regStats.totalRevenueCents / 100).toFixed(0)}`} />
+                <StatCard icon={<CreditCard size={14} />} label="Revenue" value={`£${(regStats.totalRevenueCents / 100).toFixed(0)}`} />
               </div>
 
               <div className="bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.08)] rounded-xl overflow-hidden">
@@ -489,6 +508,7 @@ export function AdminDashboard({ userEmail }: { userEmail: string }) {
                           <th>Event</th>
                           <th>Date</th>
                           <th>Location</th>
+                          <th>Category</th>
                           <th style={{ textAlign: "right" }}>Price</th>
                           <th style={{ textAlign: "center" }}>Seats</th>
                           <th style={{ textAlign: "center" }}>Regs</th>
@@ -513,7 +533,7 @@ export function AdminDashboard({ userEmail }: { userEmail: string }) {
             <>
               <div className="grid grid-cols-4 gap-4 mb-8 max-md:grid-cols-2">
                 <StatCard icon={<Users size={14} />} label="Total Registrations" value={String(regStats.totalRegistrations)} />
-                <StatCard icon={<CreditCard size={14} />} label="Revenue" value={`€${(regStats.totalRevenueCents / 100).toFixed(0)}`} />
+                <StatCard icon={<CreditCard size={14} />} label="Revenue" value={`£${(regStats.totalRevenueCents / 100).toFixed(0)}`} />
                 <StatCard icon={<CheckCircle size={14} />} label="Paid" value={String(regStats.paidCount)} />
                 <StatCard icon={<Clock size={14} />} label="Pending" value={String(regStats.pendingCount)} />
               </div>
