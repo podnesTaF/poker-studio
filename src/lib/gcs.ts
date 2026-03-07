@@ -7,28 +7,34 @@ let storage: Storage | null = null;
 function getStorage(): Storage {
   if (storage) return storage;
 
-  const keyFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
   const credentialsRaw = process.env.GCS_SERVICE_ACCOUNT_KEY;
+  const credentialsBase64 = process.env.GCS_SERVICE_ACCOUNT_KEY_BASE64;
+  const keyFilePath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-  // Prefer key file (e.g. google-key.json) so multi-line JSON works
-  if (keyFilePath) {
-    storage = new Storage({ keyFilename: keyFilePath });
-  } else if (credentialsRaw) {
+  // Prefer Base64 (avoids .env escaping issues) or raw JSON
+  const rawJson =
+    credentialsBase64 != null
+      ? Buffer.from(credentialsBase64, "base64").toString("utf8")
+      : credentialsRaw;
+
+  if (rawJson) {
     let credentials: object;
     try {
-      credentials = JSON.parse(credentialsRaw);
+      credentials = JSON.parse(rawJson);
     } catch {
       // .env often truncates at the first newline; try compacting whitespace
-      const compact = credentialsRaw.replace(/\s+/g, " ").trim();
+      const compact = rawJson.replace(/\s+/g, " ").trim();
       try {
         credentials = JSON.parse(compact);
       } catch {
         throw new Error(
-          "GCS_SERVICE_ACCOUNT_KEY is invalid JSON. In .env put the entire key on a single line (no line breaks), or use GOOGLE_APPLICATION_CREDENTIALS with a path to a key file."
+          "GCS credentials invalid. Use GCS_SERVICE_ACCOUNT_KEY_BASE64 (base64 of JSON) or GCS_SERVICE_ACCOUNT_KEY (full JSON on one line), or GOOGLE_APPLICATION_CREDENTIALS (path to key file)."
         );
       }
     }
     storage = new Storage({ credentials });
+  } else if (keyFilePath) {
+    storage = new Storage({ keyFilename: keyFilePath });
   } else {
     storage = new Storage();
   }
