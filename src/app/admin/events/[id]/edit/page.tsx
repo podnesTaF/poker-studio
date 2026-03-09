@@ -18,6 +18,7 @@ export default async function EditEventPage({
     where: { id },
     include: {
       images: { orderBy: { order: "asc" } },
+      videos: { orderBy: { order: "asc" } },
     },
   });
 
@@ -41,6 +42,13 @@ export default async function EditEventPage({
           url: img.url,
           gcsPath: img.gcsPath,
           order: img.order,
+        })),
+        videos: event.videos.map((vid) => ({
+          id: vid.id,
+          url: vid.url,
+          gcsPath: vid.gcsPath,
+          order: vid.order,
+          isCover: vid.isCover,
         })),
       }}
     />

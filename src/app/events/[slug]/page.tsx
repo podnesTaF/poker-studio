@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getCategoryTheme } from "@/lib/categories";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { EventMediaGallery } from "@/components/EventMediaGallery";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -303,6 +304,7 @@ export default async function EventPage({
     where: { slug },
     include: {
       images: { orderBy: { order: "asc" } },
+      videos: { orderBy: { order: "asc" } },
       _count: {
         select: {
           registrations: {
@@ -326,6 +328,10 @@ export default async function EventPage({
 
   const eventDate = new Date(event.date);
   const isPast = eventDate < new Date();
+
+  const coverVideo = event.videos.find((v) => v.isCover) ?? null;
+  const galleryImages = coverVideo ? event.images : event.images.slice(1);
+  const galleryVideos = event.videos.filter((v) => !v.isCover);
 
   const bgPatternClass =
     design.bgPattern === "dots"
@@ -363,17 +369,28 @@ export default async function EventPage({
         />
       ))}
 
-      {/* Hero image with category-specific overlay */}
-      {event.images.length > 0 && (
+      {/* Hero media with category-specific overlay */}
+      {(coverVideo || event.images.length > 0) && (
         <div className="relative w-full h-[50vh] max-h-[520px]">
-          <Image
-            src={event.images[0].url}
-            alt={event.title}
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
+          {coverVideo ? (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              src={coverVideo.url}
+            />
+          ) : (
+            <Image
+              src={event.images[0].url}
+              alt={event.title}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          )}
           <div className="absolute inset-0" style={{ background: design.heroOverlay }} />
 
           {/* Category-specific decorative corners */}
@@ -491,26 +508,12 @@ export default async function EventPage({
               />
             )}
 
-            {event.images.length > 1 && (
-              <div className="mt-10 grid grid-cols-2 gap-3">
-                {event.images.slice(1).map((img) => (
-                  <div
-                    key={img.id}
-                    className="relative aspect-[4/3] overflow-hidden gallery-item"
-                    style={{
-                      borderRadius: design.accentShape === "sharp" ? 4 : 12,
-                    }}
-                  >
-                    <Image
-                      src={img.url}
-                      alt=""
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 400px"
-                    />
-                  </div>
-                ))}
-              </div>
+            {(galleryImages.length > 0 || galleryVideos.length > 0) && (
+              <EventMediaGallery
+                images={galleryImages.map((img) => ({ id: img.id, url: img.url }))}
+                videos={galleryVideos.map((vid) => ({ id: vid.id, url: vid.url }))}
+                borderRadius={design.accentShape === "sharp" ? 4 : 12}
+              />
             )}
           </div>
 

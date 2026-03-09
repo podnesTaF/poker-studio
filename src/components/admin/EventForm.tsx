@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Trash2, ExternalLink, Send, Loader2 } from "lucide-react";
 import { RichTextEditor } from "./RichTextEditor";
 import { ImageUpload, type ImageItem } from "./ImageUpload";
+import { VideoUpload, type VideoItem } from "./VideoUpload";
 import { CATEGORY_OPTIONS, getCategoryTheme } from "@/lib/categories";
 
 const SERIF_FONT = "var(--font-playfair), 'Playfair Display', Georgia, serif";
@@ -30,6 +31,7 @@ type EventData = {
   maxSeats: number | null;
   published: boolean;
   images: { id: string; url: string; gcsPath: string; order: number }[];
+  videos: { id: string; url: string; gcsPath: string; order: number; isCover: boolean }[];
 };
 
 export function EventForm({ event }: { event?: EventData }) {
@@ -56,6 +58,15 @@ export function EventForm({ event }: { event?: EventData }) {
       url: img.url,
       gcsPath: img.gcsPath,
       order: img.order,
+    })) ?? []
+  );
+  const [videos, setVideos] = useState<VideoItem[]>(() =>
+    event?.videos?.map((vid) => ({
+      id: vid.id,
+      url: vid.url,
+      gcsPath: vid.gcsPath,
+      order: vid.order,
+      isCover: vid.isCover,
     })) ?? []
   );
 
@@ -98,6 +109,14 @@ export function EventForm({ event }: { event?: EventData }) {
         gcsPath: img.gcsPath,
         order: i,
         isNew: img.isNew,
+      })),
+      videos: videos.map((vid, i) => ({
+        id: vid.id,
+        url: vid.url,
+        gcsPath: vid.gcsPath,
+        order: i,
+        isCover: vid.isCover,
+        isNew: vid.isNew,
       })),
     };
 
@@ -289,6 +308,17 @@ export function EventForm({ event }: { event?: EventData }) {
                   </span>
                 </label>
                 <ImageUpload images={images} onChange={setImages} folder="events" />
+              </div>
+
+              {/* Videos card */}
+              <div className="bg-[#fdfaf5] border border-[#e0d6c8] rounded-xl p-6">
+                <label className={`${labelClass} mb-3`}>
+                  Videos
+                  <span className="ml-2 text-[#8c7f6e] font-normal normal-case tracking-normal">
+                    — set one as cover or display in gallery
+                  </span>
+                </label>
+                <VideoUpload videos={videos} onChange={setVideos} folder="events/videos" />
               </div>
             </div>
 

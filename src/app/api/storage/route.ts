@@ -27,6 +27,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
+    const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+    const MAX_VIDEO_SIZE = 70 * 1024 * 1024;
+    const isVideo = file.type.startsWith("video/");
+    const maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE;
+
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: `File too large. Maximum size is ${isVideo ? "70MB" : "10MB"}` },
+        { status: 413 }
+      );
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const timestamp = Date.now();
     const sanitized = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");

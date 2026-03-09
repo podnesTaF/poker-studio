@@ -101,9 +101,62 @@ export async function PUT(
     }
   }
 
+  if (body.videos) {
+    const incomingVids: {
+      id?: string;
+      url: string;
+      gcsPath: string;
+      order: number;
+      isCover: boolean;
+      isNew?: boolean;
+    }[] = body.videos;
+
+    const existingVideos = await prisma.eventVideo.findMany({
+      where: { eventId: id },
+    });
+
+    const incomingVidIds = new Set(
+      incomingVids.filter((v) => v.id).map((v) => v.id)
+    );
+    const videosToDelete = existingVideos.filter(
+      (vid) => !incomingVidIds.has(vid.id)
+    );
+
+    for (const vid of videosToDelete) {
+      try {
+        await deleteFile(vid.gcsPath);
+      } catch {
+        // best-effort
+      }
+      await prisma.eventVideo.delete({ where: { id: vid.id } });
+    }
+
+    for (const vid of incomingVids) {
+      if (vid.isNew || !vid.id) {
+        await prisma.eventVideo.create({
+          data: {
+            eventId: id,
+            url: vid.url,
+            gcsPath: vid.gcsPath,
+            order: vid.order,
+            isCover: vid.isCover ?? false,
+          },
+        });
+      } else {
+        await prisma.eventVideo.update({
+          where: { id: vid.id },
+          data: { order: vid.order, isCover: vid.isCover ?? false },
+        });
+      }
+    }
+  }
+
   const updated = await prisma.event.findUnique({
     where: { id },
-    include: { images: { orderBy: { order: "asc" } } },
+    include: {
+      images: { orderBy: { order: "asc" } },
+      videos: { orderBy: { order: "asc" } },
+    },
   });
 
   return NextResponse.json({ event: updated });
@@ -124,6 +177,15 @@ export async function DELETE(
   for (const img of images) {
     try {
       await deleteFile(img.gcsPath);
+    } catch {
+      // best-effort
+    }
+  }
+
+  const videos = await prisma.eventVideo.findMany({ where: { eventId: id } });
+  for (const vid of videos) {
+    try {
+      await deleteFile(vid.gcsPath);
     } catch {
       // best-effort
     }

@@ -143,6 +143,15 @@ exports.Prisma.EventImageScalarFieldEnum = {
   order: 'order'
 };
 
+exports.Prisma.EventVideoScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  url: 'url',
+  gcsPath: 'gcsPath',
+  order: 'order',
+  isCover: 'isCover'
+};
+
 exports.Prisma.RegistrationScalarFieldEnum = {
   id: 'id',
   eventId: 'eventId',
@@ -207,6 +216,7 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
 exports.Prisma.ModelName = {
   Event: 'Event',
   EventImage: 'EventImage',
+  EventVideo: 'EventVideo',
   Registration: 'Registration',
   RegistrationGuest: 'RegistrationGuest',
   Subscriber: 'Subscriber',

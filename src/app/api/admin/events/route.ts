@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { title, slug, description, date, location, category, priceInCents, maxSeats, published, images } =
+  const { title, slug, description, date, location, category, priceInCents, maxSeats, published, images, videos } =
     body;
 
   if (!title || !slug || !date || priceInCents == null) {
@@ -61,8 +61,21 @@ export async function POST(request: NextRequest) {
               ),
             }
           : undefined,
+      videos:
+        videos && videos.length > 0
+          ? {
+              create: videos.map(
+                (vid: { url: string; gcsPath: string; order: number; isCover: boolean }) => ({
+                  url: vid.url,
+                  gcsPath: vid.gcsPath,
+                  order: vid.order,
+                  isCover: vid.isCover ?? false,
+                })
+              ),
+            }
+          : undefined,
     },
-    include: { images: true },
+    include: { images: true, videos: true },
   });
 
   return NextResponse.json({ event }, { status: 201 });

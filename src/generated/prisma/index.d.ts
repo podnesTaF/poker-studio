@@ -24,6 +24,11 @@ export type Event = $Result.DefaultSelection<Prisma.$EventPayload>
  */
 export type EventImage = $Result.DefaultSelection<Prisma.$EventImagePayload>
 /**
+ * Model EventVideo
+ * 
+ */
+export type EventVideo = $Result.DefaultSelection<Prisma.$EventVideoPayload>
+/**
  * Model Registration
  * 
  */
@@ -208,6 +213,16 @@ export class PrismaClient<
     * ```
     */
   get eventImage(): Prisma.EventImageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.eventVideo`: Exposes CRUD operations for the **EventVideo** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EventVideos
+    * const eventVideos = await prisma.eventVideo.findMany()
+    * ```
+    */
+  get eventVideo(): Prisma.EventVideoDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.registration`: Exposes CRUD operations for the **Registration** model.
@@ -694,6 +709,7 @@ export namespace Prisma {
   export const ModelName: {
     Event: 'Event',
     EventImage: 'EventImage',
+    EventVideo: 'EventVideo',
     Registration: 'Registration',
     RegistrationGuest: 'RegistrationGuest',
     Subscriber: 'Subscriber',
@@ -714,7 +730,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "event" | "eventImage" | "registration" | "registrationGuest" | "subscriber" | "galleryImage" | "siteSetting"
+      modelProps: "event" | "eventImage" | "eventVideo" | "registration" | "registrationGuest" | "subscriber" | "galleryImage" | "siteSetting"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -863,6 +879,80 @@ export namespace Prisma {
           count: {
             args: Prisma.EventImageCountArgs<ExtArgs>
             result: $Utils.Optional<EventImageCountAggregateOutputType> | number
+          }
+        }
+      }
+      EventVideo: {
+        payload: Prisma.$EventVideoPayload<ExtArgs>
+        fields: Prisma.EventVideoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EventVideoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EventVideoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>
+          }
+          findFirst: {
+            args: Prisma.EventVideoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EventVideoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>
+          }
+          findMany: {
+            args: Prisma.EventVideoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>[]
+          }
+          create: {
+            args: Prisma.EventVideoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>
+          }
+          createMany: {
+            args: Prisma.EventVideoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EventVideoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>[]
+          }
+          delete: {
+            args: Prisma.EventVideoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>
+          }
+          update: {
+            args: Prisma.EventVideoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>
+          }
+          deleteMany: {
+            args: Prisma.EventVideoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EventVideoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EventVideoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>[]
+          }
+          upsert: {
+            args: Prisma.EventVideoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EventVideoPayload>
+          }
+          aggregate: {
+            args: Prisma.EventVideoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEventVideo>
+          }
+          groupBy: {
+            args: Prisma.EventVideoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EventVideoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EventVideoCountArgs<ExtArgs>
+            result: $Utils.Optional<EventVideoCountAggregateOutputType> | number
           }
         }
       }
@@ -1346,6 +1436,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     event?: EventOmit
     eventImage?: EventImageOmit
+    eventVideo?: EventVideoOmit
     registration?: RegistrationOmit
     registrationGuest?: RegistrationGuestOmit
     subscriber?: SubscriberOmit
@@ -1432,11 +1523,13 @@ export namespace Prisma {
 
   export type EventCountOutputType = {
     images: number
+    videos: number
     registrations: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | EventCountOutputTypeCountImagesArgs
+    videos?: boolean | EventCountOutputTypeCountVideosArgs
     registrations?: boolean | EventCountOutputTypeCountRegistrationsArgs
   }
 
@@ -1456,6 +1549,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountImagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EventImageWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountVideosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventVideoWhereInput
   }
 
   /**
@@ -1760,6 +1860,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     images?: boolean | Event$imagesArgs<ExtArgs>
+    videos?: boolean | Event$videosArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
@@ -1812,6 +1913,7 @@ export namespace Prisma {
   export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "date" | "location" | "category" | "priceInCents" | "maxSeats" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | Event$imagesArgs<ExtArgs>
+    videos?: boolean | Event$videosArgs<ExtArgs>
     registrations?: boolean | Event$registrationsArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1822,6 +1924,7 @@ export namespace Prisma {
     name: "Event"
     objects: {
       images: Prisma.$EventImagePayload<ExtArgs>[]
+      videos: Prisma.$EventVideoPayload<ExtArgs>[]
       registrations: Prisma.$RegistrationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2232,6 +2335,7 @@ export namespace Prisma {
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     images<T extends Event$imagesArgs<ExtArgs> = {}>(args?: Subset<T, Event$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    videos<T extends Event$videosArgs<ExtArgs> = {}>(args?: Subset<T, Event$videosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     registrations<T extends Event$registrationsArgs<ExtArgs> = {}>(args?: Subset<T, Event$registrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2683,6 +2787,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EventImageScalarFieldEnum | EventImageScalarFieldEnum[]
+  }
+
+  /**
+   * Event.videos
+   */
+  export type Event$videosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    where?: EventVideoWhereInput
+    orderBy?: EventVideoOrderByWithRelationInput | EventVideoOrderByWithRelationInput[]
+    cursor?: EventVideoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventVideoScalarFieldEnum | EventVideoScalarFieldEnum[]
   }
 
   /**
@@ -3817,6 +3945,1111 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EventImageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EventVideo
+   */
+
+  export type AggregateEventVideo = {
+    _count: EventVideoCountAggregateOutputType | null
+    _avg: EventVideoAvgAggregateOutputType | null
+    _sum: EventVideoSumAggregateOutputType | null
+    _min: EventVideoMinAggregateOutputType | null
+    _max: EventVideoMaxAggregateOutputType | null
+  }
+
+  export type EventVideoAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type EventVideoSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type EventVideoMinAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    url: string | null
+    gcsPath: string | null
+    order: number | null
+    isCover: boolean | null
+  }
+
+  export type EventVideoMaxAggregateOutputType = {
+    id: string | null
+    eventId: string | null
+    url: string | null
+    gcsPath: string | null
+    order: number | null
+    isCover: boolean | null
+  }
+
+  export type EventVideoCountAggregateOutputType = {
+    id: number
+    eventId: number
+    url: number
+    gcsPath: number
+    order: number
+    isCover: number
+    _all: number
+  }
+
+
+  export type EventVideoAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type EventVideoSumAggregateInputType = {
+    order?: true
+  }
+
+  export type EventVideoMinAggregateInputType = {
+    id?: true
+    eventId?: true
+    url?: true
+    gcsPath?: true
+    order?: true
+    isCover?: true
+  }
+
+  export type EventVideoMaxAggregateInputType = {
+    id?: true
+    eventId?: true
+    url?: true
+    gcsPath?: true
+    order?: true
+    isCover?: true
+  }
+
+  export type EventVideoCountAggregateInputType = {
+    id?: true
+    eventId?: true
+    url?: true
+    gcsPath?: true
+    order?: true
+    isCover?: true
+    _all?: true
+  }
+
+  export type EventVideoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventVideo to aggregate.
+     */
+    where?: EventVideoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventVideos to fetch.
+     */
+    orderBy?: EventVideoOrderByWithRelationInput | EventVideoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EventVideoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventVideos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventVideos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EventVideos
+    **/
+    _count?: true | EventVideoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EventVideoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EventVideoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventVideoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventVideoMaxAggregateInputType
+  }
+
+  export type GetEventVideoAggregateType<T extends EventVideoAggregateArgs> = {
+        [P in keyof T & keyof AggregateEventVideo]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEventVideo[P]>
+      : GetScalarType<T[P], AggregateEventVideo[P]>
+  }
+
+
+
+
+  export type EventVideoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventVideoWhereInput
+    orderBy?: EventVideoOrderByWithAggregationInput | EventVideoOrderByWithAggregationInput[]
+    by: EventVideoScalarFieldEnum[] | EventVideoScalarFieldEnum
+    having?: EventVideoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventVideoCountAggregateInputType | true
+    _avg?: EventVideoAvgAggregateInputType
+    _sum?: EventVideoSumAggregateInputType
+    _min?: EventVideoMinAggregateInputType
+    _max?: EventVideoMaxAggregateInputType
+  }
+
+  export type EventVideoGroupByOutputType = {
+    id: string
+    eventId: string
+    url: string
+    gcsPath: string
+    order: number
+    isCover: boolean
+    _count: EventVideoCountAggregateOutputType | null
+    _avg: EventVideoAvgAggregateOutputType | null
+    _sum: EventVideoSumAggregateOutputType | null
+    _min: EventVideoMinAggregateOutputType | null
+    _max: EventVideoMaxAggregateOutputType | null
+  }
+
+  type GetEventVideoGroupByPayload<T extends EventVideoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EventVideoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventVideoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventVideoGroupByOutputType[P]>
+            : GetScalarType<T[P], EventVideoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventVideoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    url?: boolean
+    gcsPath?: boolean
+    order?: boolean
+    isCover?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventVideo"]>
+
+  export type EventVideoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    url?: boolean
+    gcsPath?: boolean
+    order?: boolean
+    isCover?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventVideo"]>
+
+  export type EventVideoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    eventId?: boolean
+    url?: boolean
+    gcsPath?: boolean
+    order?: boolean
+    isCover?: boolean
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["eventVideo"]>
+
+  export type EventVideoSelectScalar = {
+    id?: boolean
+    eventId?: boolean
+    url?: boolean
+    gcsPath?: boolean
+    order?: boolean
+    isCover?: boolean
+  }
+
+  export type EventVideoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "eventId" | "url" | "gcsPath" | "order" | "isCover", ExtArgs["result"]["eventVideo"]>
+  export type EventVideoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type EventVideoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type EventVideoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $EventVideoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EventVideo"
+    objects: {
+      event: Prisma.$EventPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      eventId: string
+      url: string
+      gcsPath: string
+      order: number
+      isCover: boolean
+    }, ExtArgs["result"]["eventVideo"]>
+    composites: {}
+  }
+
+  type EventVideoGetPayload<S extends boolean | null | undefined | EventVideoDefaultArgs> = $Result.GetResult<Prisma.$EventVideoPayload, S>
+
+  type EventVideoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EventVideoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EventVideoCountAggregateInputType | true
+    }
+
+  export interface EventVideoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EventVideo'], meta: { name: 'EventVideo' } }
+    /**
+     * Find zero or one EventVideo that matches the filter.
+     * @param {EventVideoFindUniqueArgs} args - Arguments to find a EventVideo
+     * @example
+     * // Get one EventVideo
+     * const eventVideo = await prisma.eventVideo.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EventVideoFindUniqueArgs>(args: SelectSubset<T, EventVideoFindUniqueArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EventVideo that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EventVideoFindUniqueOrThrowArgs} args - Arguments to find a EventVideo
+     * @example
+     * // Get one EventVideo
+     * const eventVideo = await prisma.eventVideo.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EventVideoFindUniqueOrThrowArgs>(args: SelectSubset<T, EventVideoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventVideo that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventVideoFindFirstArgs} args - Arguments to find a EventVideo
+     * @example
+     * // Get one EventVideo
+     * const eventVideo = await prisma.eventVideo.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EventVideoFindFirstArgs>(args?: SelectSubset<T, EventVideoFindFirstArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EventVideo that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventVideoFindFirstOrThrowArgs} args - Arguments to find a EventVideo
+     * @example
+     * // Get one EventVideo
+     * const eventVideo = await prisma.eventVideo.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EventVideoFindFirstOrThrowArgs>(args?: SelectSubset<T, EventVideoFindFirstOrThrowArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EventVideos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventVideoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EventVideos
+     * const eventVideos = await prisma.eventVideo.findMany()
+     * 
+     * // Get first 10 EventVideos
+     * const eventVideos = await prisma.eventVideo.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventVideoWithIdOnly = await prisma.eventVideo.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EventVideoFindManyArgs>(args?: SelectSubset<T, EventVideoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EventVideo.
+     * @param {EventVideoCreateArgs} args - Arguments to create a EventVideo.
+     * @example
+     * // Create one EventVideo
+     * const EventVideo = await prisma.eventVideo.create({
+     *   data: {
+     *     // ... data to create a EventVideo
+     *   }
+     * })
+     * 
+     */
+    create<T extends EventVideoCreateArgs>(args: SelectSubset<T, EventVideoCreateArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EventVideos.
+     * @param {EventVideoCreateManyArgs} args - Arguments to create many EventVideos.
+     * @example
+     * // Create many EventVideos
+     * const eventVideo = await prisma.eventVideo.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EventVideoCreateManyArgs>(args?: SelectSubset<T, EventVideoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EventVideos and returns the data saved in the database.
+     * @param {EventVideoCreateManyAndReturnArgs} args - Arguments to create many EventVideos.
+     * @example
+     * // Create many EventVideos
+     * const eventVideo = await prisma.eventVideo.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EventVideos and only return the `id`
+     * const eventVideoWithIdOnly = await prisma.eventVideo.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EventVideoCreateManyAndReturnArgs>(args?: SelectSubset<T, EventVideoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EventVideo.
+     * @param {EventVideoDeleteArgs} args - Arguments to delete one EventVideo.
+     * @example
+     * // Delete one EventVideo
+     * const EventVideo = await prisma.eventVideo.delete({
+     *   where: {
+     *     // ... filter to delete one EventVideo
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EventVideoDeleteArgs>(args: SelectSubset<T, EventVideoDeleteArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EventVideo.
+     * @param {EventVideoUpdateArgs} args - Arguments to update one EventVideo.
+     * @example
+     * // Update one EventVideo
+     * const eventVideo = await prisma.eventVideo.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EventVideoUpdateArgs>(args: SelectSubset<T, EventVideoUpdateArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EventVideos.
+     * @param {EventVideoDeleteManyArgs} args - Arguments to filter EventVideos to delete.
+     * @example
+     * // Delete a few EventVideos
+     * const { count } = await prisma.eventVideo.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EventVideoDeleteManyArgs>(args?: SelectSubset<T, EventVideoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventVideos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventVideoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EventVideos
+     * const eventVideo = await prisma.eventVideo.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EventVideoUpdateManyArgs>(args: SelectSubset<T, EventVideoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EventVideos and returns the data updated in the database.
+     * @param {EventVideoUpdateManyAndReturnArgs} args - Arguments to update many EventVideos.
+     * @example
+     * // Update many EventVideos
+     * const eventVideo = await prisma.eventVideo.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EventVideos and only return the `id`
+     * const eventVideoWithIdOnly = await prisma.eventVideo.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EventVideoUpdateManyAndReturnArgs>(args: SelectSubset<T, EventVideoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EventVideo.
+     * @param {EventVideoUpsertArgs} args - Arguments to update or create a EventVideo.
+     * @example
+     * // Update or create a EventVideo
+     * const eventVideo = await prisma.eventVideo.upsert({
+     *   create: {
+     *     // ... data to create a EventVideo
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EventVideo we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EventVideoUpsertArgs>(args: SelectSubset<T, EventVideoUpsertArgs<ExtArgs>>): Prisma__EventVideoClient<$Result.GetResult<Prisma.$EventVideoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EventVideos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventVideoCountArgs} args - Arguments to filter EventVideos to count.
+     * @example
+     * // Count the number of EventVideos
+     * const count = await prisma.eventVideo.count({
+     *   where: {
+     *     // ... the filter for the EventVideos we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventVideoCountArgs>(
+      args?: Subset<T, EventVideoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventVideoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EventVideo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventVideoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventVideoAggregateArgs>(args: Subset<T, EventVideoAggregateArgs>): Prisma.PrismaPromise<GetEventVideoAggregateType<T>>
+
+    /**
+     * Group by EventVideo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventVideoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventVideoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventVideoGroupByArgs['orderBy'] }
+        : { orderBy?: EventVideoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventVideoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventVideoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EventVideo model
+   */
+  readonly fields: EventVideoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EventVideo.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EventVideoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EventVideo model
+   */
+  interface EventVideoFieldRefs {
+    readonly id: FieldRef<"EventVideo", 'String'>
+    readonly eventId: FieldRef<"EventVideo", 'String'>
+    readonly url: FieldRef<"EventVideo", 'String'>
+    readonly gcsPath: FieldRef<"EventVideo", 'String'>
+    readonly order: FieldRef<"EventVideo", 'Int'>
+    readonly isCover: FieldRef<"EventVideo", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EventVideo findUnique
+   */
+  export type EventVideoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * Filter, which EventVideo to fetch.
+     */
+    where: EventVideoWhereUniqueInput
+  }
+
+  /**
+   * EventVideo findUniqueOrThrow
+   */
+  export type EventVideoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * Filter, which EventVideo to fetch.
+     */
+    where: EventVideoWhereUniqueInput
+  }
+
+  /**
+   * EventVideo findFirst
+   */
+  export type EventVideoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * Filter, which EventVideo to fetch.
+     */
+    where?: EventVideoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventVideos to fetch.
+     */
+    orderBy?: EventVideoOrderByWithRelationInput | EventVideoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventVideos.
+     */
+    cursor?: EventVideoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventVideos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventVideos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventVideos.
+     */
+    distinct?: EventVideoScalarFieldEnum | EventVideoScalarFieldEnum[]
+  }
+
+  /**
+   * EventVideo findFirstOrThrow
+   */
+  export type EventVideoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * Filter, which EventVideo to fetch.
+     */
+    where?: EventVideoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventVideos to fetch.
+     */
+    orderBy?: EventVideoOrderByWithRelationInput | EventVideoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EventVideos.
+     */
+    cursor?: EventVideoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventVideos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventVideos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EventVideos.
+     */
+    distinct?: EventVideoScalarFieldEnum | EventVideoScalarFieldEnum[]
+  }
+
+  /**
+   * EventVideo findMany
+   */
+  export type EventVideoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * Filter, which EventVideos to fetch.
+     */
+    where?: EventVideoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EventVideos to fetch.
+     */
+    orderBy?: EventVideoOrderByWithRelationInput | EventVideoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EventVideos.
+     */
+    cursor?: EventVideoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EventVideos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EventVideos.
+     */
+    skip?: number
+    distinct?: EventVideoScalarFieldEnum | EventVideoScalarFieldEnum[]
+  }
+
+  /**
+   * EventVideo create
+   */
+  export type EventVideoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EventVideo.
+     */
+    data: XOR<EventVideoCreateInput, EventVideoUncheckedCreateInput>
+  }
+
+  /**
+   * EventVideo createMany
+   */
+  export type EventVideoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EventVideos.
+     */
+    data: EventVideoCreateManyInput | EventVideoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EventVideo createManyAndReturn
+   */
+  export type EventVideoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * The data used to create many EventVideos.
+     */
+    data: EventVideoCreateManyInput | EventVideoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventVideo update
+   */
+  export type EventVideoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EventVideo.
+     */
+    data: XOR<EventVideoUpdateInput, EventVideoUncheckedUpdateInput>
+    /**
+     * Choose, which EventVideo to update.
+     */
+    where: EventVideoWhereUniqueInput
+  }
+
+  /**
+   * EventVideo updateMany
+   */
+  export type EventVideoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EventVideos.
+     */
+    data: XOR<EventVideoUpdateManyMutationInput, EventVideoUncheckedUpdateManyInput>
+    /**
+     * Filter which EventVideos to update
+     */
+    where?: EventVideoWhereInput
+    /**
+     * Limit how many EventVideos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventVideo updateManyAndReturn
+   */
+  export type EventVideoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * The data used to update EventVideos.
+     */
+    data: XOR<EventVideoUpdateManyMutationInput, EventVideoUncheckedUpdateManyInput>
+    /**
+     * Filter which EventVideos to update
+     */
+    where?: EventVideoWhereInput
+    /**
+     * Limit how many EventVideos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EventVideo upsert
+   */
+  export type EventVideoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EventVideo to update in case it exists.
+     */
+    where: EventVideoWhereUniqueInput
+    /**
+     * In case the EventVideo found by the `where` argument doesn't exist, create a new EventVideo with this data.
+     */
+    create: XOR<EventVideoCreateInput, EventVideoUncheckedCreateInput>
+    /**
+     * In case the EventVideo was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EventVideoUpdateInput, EventVideoUncheckedUpdateInput>
+  }
+
+  /**
+   * EventVideo delete
+   */
+  export type EventVideoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
+    /**
+     * Filter which EventVideo to delete.
+     */
+    where: EventVideoWhereUniqueInput
+  }
+
+  /**
+   * EventVideo deleteMany
+   */
+  export type EventVideoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EventVideos to delete
+     */
+    where?: EventVideoWhereInput
+    /**
+     * Limit how many EventVideos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EventVideo without action
+   */
+  export type EventVideoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EventVideo
+     */
+    select?: EventVideoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EventVideo
+     */
+    omit?: EventVideoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventVideoInclude<ExtArgs> | null
   }
 
 
@@ -9062,6 +10295,18 @@ export namespace Prisma {
   export type EventImageScalarFieldEnum = (typeof EventImageScalarFieldEnum)[keyof typeof EventImageScalarFieldEnum]
 
 
+  export const EventVideoScalarFieldEnum: {
+    id: 'id',
+    eventId: 'eventId',
+    url: 'url',
+    gcsPath: 'gcsPath',
+    order: 'order',
+    isCover: 'isCover'
+  };
+
+  export type EventVideoScalarFieldEnum = (typeof EventVideoScalarFieldEnum)[keyof typeof EventVideoScalarFieldEnum]
+
+
   export const RegistrationScalarFieldEnum: {
     id: 'id',
     eventId: 'eventId',
@@ -9243,6 +10488,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     images?: EventImageListRelationFilter
+    videos?: EventVideoListRelationFilter
     registrations?: RegistrationListRelationFilter
   }
 
@@ -9260,6 +10506,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     images?: EventImageOrderByRelationAggregateInput
+    videos?: EventVideoOrderByRelationAggregateInput
     registrations?: RegistrationOrderByRelationAggregateInput
   }
 
@@ -9280,6 +10527,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     images?: EventImageListRelationFilter
+    videos?: EventVideoListRelationFilter
     registrations?: RegistrationListRelationFilter
   }, "id" | "slug">
 
@@ -9376,6 +10624,68 @@ export namespace Prisma {
     url?: StringWithAggregatesFilter<"EventImage"> | string
     gcsPath?: StringWithAggregatesFilter<"EventImage"> | string
     order?: IntWithAggregatesFilter<"EventImage"> | number
+  }
+
+  export type EventVideoWhereInput = {
+    AND?: EventVideoWhereInput | EventVideoWhereInput[]
+    OR?: EventVideoWhereInput[]
+    NOT?: EventVideoWhereInput | EventVideoWhereInput[]
+    id?: StringFilter<"EventVideo"> | string
+    eventId?: StringFilter<"EventVideo"> | string
+    url?: StringFilter<"EventVideo"> | string
+    gcsPath?: StringFilter<"EventVideo"> | string
+    order?: IntFilter<"EventVideo"> | number
+    isCover?: BoolFilter<"EventVideo"> | boolean
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }
+
+  export type EventVideoOrderByWithRelationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    url?: SortOrder
+    gcsPath?: SortOrder
+    order?: SortOrder
+    isCover?: SortOrder
+    event?: EventOrderByWithRelationInput
+  }
+
+  export type EventVideoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EventVideoWhereInput | EventVideoWhereInput[]
+    OR?: EventVideoWhereInput[]
+    NOT?: EventVideoWhereInput | EventVideoWhereInput[]
+    eventId?: StringFilter<"EventVideo"> | string
+    url?: StringFilter<"EventVideo"> | string
+    gcsPath?: StringFilter<"EventVideo"> | string
+    order?: IntFilter<"EventVideo"> | number
+    isCover?: BoolFilter<"EventVideo"> | boolean
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }, "id">
+
+  export type EventVideoOrderByWithAggregationInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    url?: SortOrder
+    gcsPath?: SortOrder
+    order?: SortOrder
+    isCover?: SortOrder
+    _count?: EventVideoCountOrderByAggregateInput
+    _avg?: EventVideoAvgOrderByAggregateInput
+    _max?: EventVideoMaxOrderByAggregateInput
+    _min?: EventVideoMinOrderByAggregateInput
+    _sum?: EventVideoSumOrderByAggregateInput
+  }
+
+  export type EventVideoScalarWhereWithAggregatesInput = {
+    AND?: EventVideoScalarWhereWithAggregatesInput | EventVideoScalarWhereWithAggregatesInput[]
+    OR?: EventVideoScalarWhereWithAggregatesInput[]
+    NOT?: EventVideoScalarWhereWithAggregatesInput | EventVideoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EventVideo"> | string
+    eventId?: StringWithAggregatesFilter<"EventVideo"> | string
+    url?: StringWithAggregatesFilter<"EventVideo"> | string
+    gcsPath?: StringWithAggregatesFilter<"EventVideo"> | string
+    order?: IntWithAggregatesFilter<"EventVideo"> | number
+    isCover?: BoolWithAggregatesFilter<"EventVideo"> | boolean
   }
 
   export type RegistrationWhereInput = {
@@ -9665,6 +10975,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: EventImageCreateNestedManyWithoutEventInput
+    videos?: EventVideoCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
   }
 
@@ -9682,6 +10993,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: EventImageUncheckedCreateNestedManyWithoutEventInput
+    videos?: EventVideoUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -9699,6 +11011,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: EventImageUpdateManyWithoutEventNestedInput
+    videos?: EventVideoUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
   }
 
@@ -9716,6 +11029,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: EventImageUncheckedUpdateManyWithoutEventNestedInput
+    videos?: EventVideoUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -9817,6 +11131,68 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     gcsPath?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type EventVideoCreateInput = {
+    id?: string
+    url: string
+    gcsPath: string
+    order?: number
+    isCover?: boolean
+    event: EventCreateNestedOneWithoutVideosInput
+  }
+
+  export type EventVideoUncheckedCreateInput = {
+    id?: string
+    eventId: string
+    url: string
+    gcsPath: string
+    order?: number
+    isCover?: boolean
+  }
+
+  export type EventVideoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    gcsPath?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCover?: BoolFieldUpdateOperationsInput | boolean
+    event?: EventUpdateOneRequiredWithoutVideosNestedInput
+  }
+
+  export type EventVideoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    gcsPath?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCover?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type EventVideoCreateManyInput = {
+    id?: string
+    eventId: string
+    url: string
+    gcsPath: string
+    order?: number
+    isCover?: boolean
+  }
+
+  export type EventVideoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    gcsPath?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCover?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type EventVideoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    gcsPath?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCover?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RegistrationCreateInput = {
@@ -10175,6 +11551,12 @@ export namespace Prisma {
     none?: EventImageWhereInput
   }
 
+  export type EventVideoListRelationFilter = {
+    every?: EventVideoWhereInput
+    some?: EventVideoWhereInput
+    none?: EventVideoWhereInput
+  }
+
   export type RegistrationListRelationFilter = {
     every?: RegistrationWhereInput
     some?: RegistrationWhereInput
@@ -10187,6 +11569,10 @@ export namespace Prisma {
   }
 
   export type EventImageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EventVideoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -10376,6 +11762,41 @@ export namespace Prisma {
     order?: SortOrder
   }
 
+  export type EventVideoCountOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    url?: SortOrder
+    gcsPath?: SortOrder
+    order?: SortOrder
+    isCover?: SortOrder
+  }
+
+  export type EventVideoAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type EventVideoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    url?: SortOrder
+    gcsPath?: SortOrder
+    order?: SortOrder
+    isCover?: SortOrder
+  }
+
+  export type EventVideoMinOrderByAggregateInput = {
+    id?: SortOrder
+    eventId?: SortOrder
+    url?: SortOrder
+    gcsPath?: SortOrder
+    order?: SortOrder
+    isCover?: SortOrder
+  }
+
+  export type EventVideoSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
   export type EnumPaymentStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
     in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
@@ -10551,6 +11972,13 @@ export namespace Prisma {
     connect?: EventImageWhereUniqueInput | EventImageWhereUniqueInput[]
   }
 
+  export type EventVideoCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventVideoCreateWithoutEventInput, EventVideoUncheckedCreateWithoutEventInput> | EventVideoCreateWithoutEventInput[] | EventVideoUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventVideoCreateOrConnectWithoutEventInput | EventVideoCreateOrConnectWithoutEventInput[]
+    createMany?: EventVideoCreateManyEventInputEnvelope
+    connect?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+  }
+
   export type RegistrationCreateNestedManyWithoutEventInput = {
     create?: XOR<RegistrationCreateWithoutEventInput, RegistrationUncheckedCreateWithoutEventInput> | RegistrationCreateWithoutEventInput[] | RegistrationUncheckedCreateWithoutEventInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutEventInput | RegistrationCreateOrConnectWithoutEventInput[]
@@ -10563,6 +11991,13 @@ export namespace Prisma {
     connectOrCreate?: EventImageCreateOrConnectWithoutEventInput | EventImageCreateOrConnectWithoutEventInput[]
     createMany?: EventImageCreateManyEventInputEnvelope
     connect?: EventImageWhereUniqueInput | EventImageWhereUniqueInput[]
+  }
+
+  export type EventVideoUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<EventVideoCreateWithoutEventInput, EventVideoUncheckedCreateWithoutEventInput> | EventVideoCreateWithoutEventInput[] | EventVideoUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventVideoCreateOrConnectWithoutEventInput | EventVideoCreateOrConnectWithoutEventInput[]
+    createMany?: EventVideoCreateManyEventInputEnvelope
+    connect?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
   }
 
   export type RegistrationUncheckedCreateNestedManyWithoutEventInput = {
@@ -10618,6 +12053,20 @@ export namespace Prisma {
     deleteMany?: EventImageScalarWhereInput | EventImageScalarWhereInput[]
   }
 
+  export type EventVideoUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventVideoCreateWithoutEventInput, EventVideoUncheckedCreateWithoutEventInput> | EventVideoCreateWithoutEventInput[] | EventVideoUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventVideoCreateOrConnectWithoutEventInput | EventVideoCreateOrConnectWithoutEventInput[]
+    upsert?: EventVideoUpsertWithWhereUniqueWithoutEventInput | EventVideoUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventVideoCreateManyEventInputEnvelope
+    set?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    disconnect?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    delete?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    connect?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    update?: EventVideoUpdateWithWhereUniqueWithoutEventInput | EventVideoUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventVideoUpdateManyWithWhereWithoutEventInput | EventVideoUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventVideoScalarWhereInput | EventVideoScalarWhereInput[]
+  }
+
   export type RegistrationUpdateManyWithoutEventNestedInput = {
     create?: XOR<RegistrationCreateWithoutEventInput, RegistrationUncheckedCreateWithoutEventInput> | RegistrationCreateWithoutEventInput[] | RegistrationUncheckedCreateWithoutEventInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutEventInput | RegistrationCreateOrConnectWithoutEventInput[]
@@ -10646,6 +12095,20 @@ export namespace Prisma {
     deleteMany?: EventImageScalarWhereInput | EventImageScalarWhereInput[]
   }
 
+  export type EventVideoUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<EventVideoCreateWithoutEventInput, EventVideoUncheckedCreateWithoutEventInput> | EventVideoCreateWithoutEventInput[] | EventVideoUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: EventVideoCreateOrConnectWithoutEventInput | EventVideoCreateOrConnectWithoutEventInput[]
+    upsert?: EventVideoUpsertWithWhereUniqueWithoutEventInput | EventVideoUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: EventVideoCreateManyEventInputEnvelope
+    set?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    disconnect?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    delete?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    connect?: EventVideoWhereUniqueInput | EventVideoWhereUniqueInput[]
+    update?: EventVideoUpdateWithWhereUniqueWithoutEventInput | EventVideoUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: EventVideoUpdateManyWithWhereWithoutEventInput | EventVideoUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: EventVideoScalarWhereInput | EventVideoScalarWhereInput[]
+  }
+
   export type RegistrationUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<RegistrationCreateWithoutEventInput, RegistrationUncheckedCreateWithoutEventInput> | RegistrationCreateWithoutEventInput[] | RegistrationUncheckedCreateWithoutEventInput[]
     connectOrCreate?: RegistrationCreateOrConnectWithoutEventInput | RegistrationCreateOrConnectWithoutEventInput[]
@@ -10672,6 +12135,20 @@ export namespace Prisma {
     upsert?: EventUpsertWithoutImagesInput
     connect?: EventWhereUniqueInput
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutImagesInput, EventUpdateWithoutImagesInput>, EventUncheckedUpdateWithoutImagesInput>
+  }
+
+  export type EventCreateNestedOneWithoutVideosInput = {
+    create?: XOR<EventCreateWithoutVideosInput, EventUncheckedCreateWithoutVideosInput>
+    connectOrCreate?: EventCreateOrConnectWithoutVideosInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type EventUpdateOneRequiredWithoutVideosNestedInput = {
+    create?: XOR<EventCreateWithoutVideosInput, EventUncheckedCreateWithoutVideosInput>
+    connectOrCreate?: EventCreateOrConnectWithoutVideosInput
+    upsert?: EventUpsertWithoutVideosInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutVideosInput, EventUpdateWithoutVideosInput>, EventUncheckedUpdateWithoutVideosInput>
   }
 
   export type EventCreateNestedOneWithoutRegistrationsInput = {
@@ -10965,6 +12442,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EventVideoCreateWithoutEventInput = {
+    id?: string
+    url: string
+    gcsPath: string
+    order?: number
+    isCover?: boolean
+  }
+
+  export type EventVideoUncheckedCreateWithoutEventInput = {
+    id?: string
+    url: string
+    gcsPath: string
+    order?: number
+    isCover?: boolean
+  }
+
+  export type EventVideoCreateOrConnectWithoutEventInput = {
+    where: EventVideoWhereUniqueInput
+    create: XOR<EventVideoCreateWithoutEventInput, EventVideoUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventVideoCreateManyEventInputEnvelope = {
+    data: EventVideoCreateManyEventInput | EventVideoCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RegistrationCreateWithoutEventInput = {
     id?: string
     fullName: string
@@ -11026,6 +12529,34 @@ export namespace Prisma {
     order?: IntFilter<"EventImage"> | number
   }
 
+  export type EventVideoUpsertWithWhereUniqueWithoutEventInput = {
+    where: EventVideoWhereUniqueInput
+    update: XOR<EventVideoUpdateWithoutEventInput, EventVideoUncheckedUpdateWithoutEventInput>
+    create: XOR<EventVideoCreateWithoutEventInput, EventVideoUncheckedCreateWithoutEventInput>
+  }
+
+  export type EventVideoUpdateWithWhereUniqueWithoutEventInput = {
+    where: EventVideoWhereUniqueInput
+    data: XOR<EventVideoUpdateWithoutEventInput, EventVideoUncheckedUpdateWithoutEventInput>
+  }
+
+  export type EventVideoUpdateManyWithWhereWithoutEventInput = {
+    where: EventVideoScalarWhereInput
+    data: XOR<EventVideoUpdateManyMutationInput, EventVideoUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type EventVideoScalarWhereInput = {
+    AND?: EventVideoScalarWhereInput | EventVideoScalarWhereInput[]
+    OR?: EventVideoScalarWhereInput[]
+    NOT?: EventVideoScalarWhereInput | EventVideoScalarWhereInput[]
+    id?: StringFilter<"EventVideo"> | string
+    eventId?: StringFilter<"EventVideo"> | string
+    url?: StringFilter<"EventVideo"> | string
+    gcsPath?: StringFilter<"EventVideo"> | string
+    order?: IntFilter<"EventVideo"> | number
+    isCover?: BoolFilter<"EventVideo"> | boolean
+  }
+
   export type RegistrationUpsertWithWhereUniqueWithoutEventInput = {
     where: RegistrationWhereUniqueInput
     update: XOR<RegistrationUpdateWithoutEventInput, RegistrationUncheckedUpdateWithoutEventInput>
@@ -11070,6 +12601,7 @@ export namespace Prisma {
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    videos?: EventVideoCreateNestedManyWithoutEventInput
     registrations?: RegistrationCreateNestedManyWithoutEventInput
   }
 
@@ -11086,6 +12618,7 @@ export namespace Prisma {
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    videos?: EventVideoUncheckedCreateNestedManyWithoutEventInput
     registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -11118,6 +12651,7 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    videos?: EventVideoUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUpdateManyWithoutEventNestedInput
   }
 
@@ -11134,6 +12668,91 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    videos?: EventVideoUncheckedUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventCreateWithoutVideosInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    date: Date | string
+    location?: string | null
+    category?: string | null
+    priceInCents: number
+    maxSeats?: number | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    images?: EventImageCreateNestedManyWithoutEventInput
+    registrations?: RegistrationCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutVideosInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    date: Date | string
+    location?: string | null
+    category?: string | null
+    priceInCents: number
+    maxSeats?: number | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    images?: EventImageUncheckedCreateNestedManyWithoutEventInput
+    registrations?: RegistrationUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutVideosInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutVideosInput, EventUncheckedCreateWithoutVideosInput>
+  }
+
+  export type EventUpsertWithoutVideosInput = {
+    update: XOR<EventUpdateWithoutVideosInput, EventUncheckedUpdateWithoutVideosInput>
+    create: XOR<EventCreateWithoutVideosInput, EventUncheckedCreateWithoutVideosInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutVideosInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutVideosInput, EventUncheckedUpdateWithoutVideosInput>
+  }
+
+  export type EventUpdateWithoutVideosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    priceInCents?: IntFieldUpdateOperationsInput | number
+    maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    images?: EventImageUpdateManyWithoutEventNestedInput
+    registrations?: RegistrationUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutVideosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    priceInCents?: IntFieldUpdateOperationsInput | number
+    maxSeats?: NullableIntFieldUpdateOperationsInput | number | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    images?: EventImageUncheckedUpdateManyWithoutEventNestedInput
     registrations?: RegistrationUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -11151,6 +12770,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: EventImageCreateNestedManyWithoutEventInput
+    videos?: EventVideoCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutRegistrationsInput = {
@@ -11167,6 +12787,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: EventImageUncheckedCreateNestedManyWithoutEventInput
+    videos?: EventVideoUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutRegistrationsInput = {
@@ -11223,6 +12844,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: EventImageUpdateManyWithoutEventNestedInput
+    videos?: EventVideoUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutRegistrationsInput = {
@@ -11239,6 +12861,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: EventImageUncheckedUpdateManyWithoutEventNestedInput
+    videos?: EventVideoUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type RegistrationGuestUpsertWithWhereUniqueWithoutRegistrationInput = {
@@ -11339,6 +12962,14 @@ export namespace Prisma {
     order?: number
   }
 
+  export type EventVideoCreateManyEventInput = {
+    id?: string
+    url: string
+    gcsPath: string
+    order?: number
+    isCover?: boolean
+  }
+
   export type RegistrationCreateManyEventInput = {
     id?: string
     fullName: string
@@ -11369,6 +13000,30 @@ export namespace Prisma {
     url?: StringFieldUpdateOperationsInput | string
     gcsPath?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type EventVideoUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    gcsPath?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCover?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type EventVideoUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    gcsPath?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCover?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type EventVideoUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    gcsPath?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isCover?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type RegistrationUpdateWithoutEventInput = {

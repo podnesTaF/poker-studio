@@ -24,6 +24,7 @@ model Event {
   updatedAt    DateTime @updatedAt
 
   images        EventImage[]
+  videos        EventVideo[]
   registrations Registration[]
 }
 
@@ -33,6 +34,19 @@ model EventImage {
   url     String
   gcsPath String
   order   Int    @default(0)
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+}
+
+model EventVideo {
+  id      String  @id @default(cuid())
+  eventId String
+  url     String
+  gcsPath String
+  order   Int     @default(0)
+  isCover Boolean @default(false)
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
