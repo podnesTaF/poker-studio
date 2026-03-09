@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { uploadFile, deleteFile, listFiles } from "@/lib/gcs";
+import { generateSignedUploadUrl, deleteFile, listFiles } from "@/lib/gcs";
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,44 +17,38 @@ export async function GET(request: NextRequest) {
   }
 }
 
+/**
+ * Returns a GCS V4 signed URL so the client can PUT the file directly to GCS,
+ * bypassing Vercel's 4.5 MB request-body limit.
+ */
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    const file = formData.get("file") as File | null;
-    const folder = (formData.get("folder") as string) ?? "uploads";
+    const { fileName, contentType, folder } = (await request.json()) as {
+      fileName?: string;
+      contentType?: string;
+      folder?: string;
+    };
 
-    if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
-    }
-
-    const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
-    const MAX_VIDEO_SIZE = 70 * 1024 * 1024;
-    const isVideo = file.type.startsWith("video/");
-    const maxSize = isVideo ? MAX_VIDEO_SIZE : MAX_IMAGE_SIZE;
-
-    if (file.size > maxSize) {
+    if (!fileName || !contentType) {
       return NextResponse.json(
-        { error: `File too large. Maximum size is ${isVideo ? "70MB" : "10MB"}` },
-        { status: 413 }
+        { error: "fileName and contentType are required" },
+        { status: 400 }
       );
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const timestamp = Date.now();
-    const sanitized = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const gcsPath = `${folder}/${timestamp}-${sanitized}`;
+    const sanitized = fileName.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const gcsPath = `${folder ?? "uploads"}/${Date.now()}-${sanitized}`;
 
-    const contentType = file.type || "application/octet-stream";
-    const result = await uploadFile(buffer, gcsPath, contentType);
-    return NextResponse.json(result, { status: 201 });
+    const result = await generateSignedUploadUrl(gcsPath, contentType);
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     const isDev = process.env.NODE_ENV === "development";
-    console.error("GCS upload error:", error);
+    console.error("GCS signed-url error:", error);
 
     return NextResponse.json(
       {
-        error: "Failed to upload file",
+        error: "Failed to generate upload URL",
         ...(isDev && { detail: message }),
       },
       { status: 500 }

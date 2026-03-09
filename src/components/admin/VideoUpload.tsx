@@ -14,16 +14,28 @@ export type VideoItem = {
 
 const MAX_VIDEO_SIZE = 70 * 1024 * 1024;
 
-function uploadFileWithProgress(
+async function uploadFileWithProgress(
   file: File,
   folder: string,
   onProgress: (percent: number) => void
 ): Promise<{ url: string; gcsPath: string }> {
+  const contentType = file.type || "application/octet-stream";
+
+  const res = await fetch("/api/storage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fileName: file.name, contentType, folder }),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || `Failed to get upload URL (${res.status})`);
+  }
+
+  const { signedUrl, publicUrl, gcsPath } = await res.json();
+
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("folder", folder);
 
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable) {
@@ -33,24 +45,16 @@ function uploadFileWithProgress(
 
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          resolve(JSON.parse(xhr.responseText));
-        } catch {
-          reject(new Error("Invalid server response"));
-        }
+        resolve({ url: publicUrl, gcsPath });
       } else {
-        try {
-          const data = JSON.parse(xhr.responseText);
-          reject(new Error(data.error || `Upload failed (${xhr.status})`));
-        } catch {
-          reject(new Error(`Upload failed (${xhr.status})`));
-        }
+        reject(new Error(`Upload to storage failed (${xhr.status})`));
       }
     };
 
     xhr.onerror = () => reject(new Error("Network error — please try again"));
-    xhr.open("POST", "/api/storage");
-    xhr.send(formData);
+    xhr.open("PUT", signedUrl);
+    xhr.setRequestHeader("Content-Type", contentType);
+    xhr.send(file);
   });
 }
 

@@ -36,20 +36,32 @@ export function ImageUpload({
       const newImages: ImageItem[] = [];
 
       for (const file of fileArr) {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("folder", folder);
+        const res = await fetch("/api/storage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fileName: file.name,
+            contentType: file.type || "application/octet-stream",
+            folder,
+          }),
+        });
+        if (!res.ok) continue;
 
-        const res = await fetch("/api/storage", { method: "POST", body: formData });
-        if (res.ok) {
-          const data = await res.json();
-          newImages.push({
-            url: data.url,
-            gcsPath: data.gcsPath,
-            order: images.length + newImages.length,
-            isNew: true,
-          });
-        }
+        const { signedUrl, publicUrl, gcsPath } = await res.json();
+
+        const put = await fetch(signedUrl, {
+          method: "PUT",
+          headers: { "Content-Type": file.type || "application/octet-stream" },
+          body: file,
+        });
+        if (!put.ok) continue;
+
+        newImages.push({
+          url: publicUrl,
+          gcsPath,
+          order: images.length + newImages.length,
+          isNew: true,
+        });
       }
 
       onChange([...images, ...newImages]);

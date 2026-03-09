@@ -93,6 +93,23 @@ export async function uploadFile(
   }
 }
 
+export async function generateSignedUploadUrl(
+  gcsPath: string,
+  contentType: string
+): Promise<{ signedUrl: string; publicUrl: string; gcsPath: string }> {
+  const bucket = getBucket();
+  const file = bucket.file(gcsPath);
+
+  const [signedUrl] = await file.getSignedUrl({
+    version: "v4",
+    action: "write",
+    expires: Date.now() + 15 * 60 * 1000,
+    contentType,
+  });
+
+  return { signedUrl, publicUrl: getPublicUrl(gcsPath), gcsPath };
+}
+
 export async function deleteFile(gcsPath: string): Promise<void> {
   const bucket = getBucket();
   const file = bucket.file(gcsPath);
