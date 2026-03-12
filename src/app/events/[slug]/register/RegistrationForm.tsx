@@ -112,7 +112,7 @@ function PaymentForm({
         ) : (
           <>
             <CreditCard size={16} />
-            Pay €{(amount / 100).toFixed(2)}
+            Pay £{(amount / 100).toFixed(2)}
           </>
         )}
       </button>
@@ -368,7 +368,8 @@ export function RegistrationForm({ event }: { event: EventInfo }) {
                       Keep me updated on future events
                     </span>
                     <span className="text-[11px] text-[rgba(255,255,255,0.35)] mt-0.5 block">
-                      Get notified about new poker nights, masterclasses, and exclusive experiences.
+                      Get notified about new poker nights, masterclasses, and
+                      exclusive experiences.
                     </span>
                   </div>
                 </label>
@@ -386,7 +387,7 @@ export function RegistrationForm({ event }: { event: EventInfo }) {
                   ) : (
                     <>
                       <CreditCard size={16} />
-                      Continue to Payment — €{(computedTotal / 100).toFixed(2)}
+                      Continue to Payment — £{(computedTotal / 100).toFixed(2)}
                     </>
                   )}
                 </button>
@@ -480,10 +481,10 @@ export function RegistrationForm({ event }: { event: EventInfo }) {
                 <div className="border-t border-[rgba(255,255,255,0.06)] pt-4 space-y-2">
                   <div className="flex justify-between text-[13px]">
                     <span className="text-[rgba(255,255,255,0.45)]">
-                      €{(event.priceInCents / 100).toFixed(2)} × {totalPeople}
+                      £{(event.priceInCents / 100).toFixed(2)} × {totalPeople}
                     </span>
                     <span className="text-[#f5f5f0]">
-                      €{(computedTotal / 100).toFixed(2)}
+                      £{(computedTotal / 100).toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between text-[15px] font-semibold pt-2 border-t border-[rgba(255,255,255,0.06)]">
@@ -492,7 +493,7 @@ export function RegistrationForm({ event }: { event: EventInfo }) {
                       className="text-[#c9a96e]"
                       style={{ fontFamily: SERIF }}
                     >
-                      €{(computedTotal / 100).toFixed(2)}
+                      £{(computedTotal / 100).toFixed(2)}
                     </span>
                   </div>
                 </div>

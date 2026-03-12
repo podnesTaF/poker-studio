@@ -6,7 +6,6 @@ import {
   Heading,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Row,
@@ -38,14 +37,12 @@ export default function RegistrationConfirmation({
   stripeReceiptUrl,
 }: Props) {
   const totalPeople = 1 + guestCount;
-  const totalFormatted = `€${(totalAmountCents / 100).toFixed(2)}`;
+  const totalFormatted = `£${(totalAmountCents / 100).toFixed(2)}`;
 
   return (
     <Html>
       <Head />
-      <Preview>
-        Your registration for {eventTitle} is confirmed
-      </Preview>
+      <Preview>Your registration for {eventTitle} is confirmed</Preview>
       <Body style={body}>
         <Container style={container}>
           {/* Header */}
@@ -64,9 +61,7 @@ export default function RegistrationConfirmation({
 
           {/* Greeting */}
           <Section style={contentSection}>
-            <Heading style={heading}>
-              Thank you, {fullName}!
-            </Heading>
+            <Heading style={heading}>Thank you, {fullName}!</Heading>
             <Text style={paragraph}>
               Your registration has been confirmed and payment received. We look
               forward to seeing you at the event.
@@ -116,7 +111,13 @@ export default function RegistrationConfirmation({
             <Section style={detailCard}>
               <Row>
                 <Column style={detailLabel}>Booking ID</Column>
-                <Column style={{ ...detailValue, fontFamily: "monospace", fontSize: 12 }}>
+                <Column
+                  style={{
+                    ...detailValue,
+                    fontFamily: "monospace",
+                    fontSize: 12,
+                  }}
+                >
                   {registrationId}
                 </Column>
               </Row>
@@ -147,9 +148,7 @@ export default function RegistrationConfirmation({
             <Text style={reminderText}>
               • Please arrive 15 minutes before the event start time
             </Text>
-            <Text style={reminderText}>
-              • Dress code: Smart Casual
-            </Text>
+            <Text style={reminderText}>• Dress code: Smart Casual</Text>
             <Text style={reminderText}>
               • Present this email or your booking ID at the door
             </Text>

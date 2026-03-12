@@ -235,10 +235,10 @@ function RegistrationRow({ reg }: { reg: Registration }) {
           }}
         >
           <span style={{ color: "#4a7a6a", fontWeight: 600 }}>
-            €{(reg.paidAmount / 100).toFixed(0)}
+            £{(reg.paidAmount / 100).toFixed(0)}
           </span>
           <span style={{ color: "#8c7f6e", fontSize: 11, marginLeft: 4 }}>
-            / €{(reg.totalAmount / 100).toFixed(0)}
+            / £{(reg.totalAmount / 100).toFixed(0)}
           </span>
         </td>
         <td
@@ -452,7 +452,7 @@ function RegistrationRow({ reg }: { reg: Registration }) {
                         >
                           <span style={{ color: "#4a7a6a", fontWeight: 600 }}>
                             {pay.amount
-                              ? `€${(pay.amount / 100).toFixed(0)}`
+                              ? `£${(pay.amount / 100).toFixed(0)}`
                               : "—"}
                           </span>
                           <span style={{ color: "#8c7f6e", fontSize: 11 }}>
@@ -482,9 +482,7 @@ function RegistrationRow({ reg }: { reg: Registration }) {
                                 fontWeight: 600,
                               }}
                             >
-                              <ExternalLink
-                                style={{ width: 12, height: 12 }}
-                              />
+                              <ExternalLink style={{ width: 12, height: 12 }} />
                               Stripe
                             </a>
                             <a
@@ -501,9 +499,7 @@ function RegistrationRow({ reg }: { reg: Registration }) {
                                 fontWeight: 600,
                               }}
                             >
-                              <FileDown
-                                style={{ width: 12, height: 12 }}
-                              />
+                              <FileDown style={{ width: 12, height: 12 }} />
                               Receipt
                             </a>
                           </span>
@@ -756,7 +752,7 @@ export function AdminDashboard({ userEmail }: { userEmail: string }) {
               icon={<CreditCard size={14} />}
               label="Revenue"
               value={
-                stats ? `€${(stats.totalRevenueCents / 100).toFixed(0)}` : "—"
+                stats ? `£${(stats.totalRevenueCents / 100).toFixed(0)}` : "—"
               }
             />
             <StatCard

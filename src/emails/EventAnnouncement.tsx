@@ -35,10 +35,8 @@ export default function EventAnnouncement({
   eventSlug = "friday-night-poker",
   baseUrl = "http://localhost:3000",
 }: Props) {
-  const price = `€${(priceInCents / 100).toFixed(2)}`;
-  const plainDesc = eventDescription
-    ?.replace(/<[^>]*>/g, "")
-    .slice(0, 200);
+  const price = `£${(priceInCents / 100).toFixed(2)}`;
+  const plainDesc = eventDescription?.replace(/<[^>]*>/g, "").slice(0, 200);
 
   return (
     <Html>
@@ -112,10 +110,7 @@ export default function EventAnnouncement({
 
           {/* CTA */}
           <Section style={ctaSection}>
-            <Button
-              href={`${baseUrl}/events/${eventSlug}`}
-              style={ctaButton}
-            >
+            <Button href={`${baseUrl}/events/${eventSlug}`} style={ctaButton}>
               View Event & Register →
             </Button>
             <Text style={ctaSubtext}>
@@ -139,8 +134,8 @@ export default function EventAnnouncement({
               </Link>
             </Text>
             <Text style={unsubscribeText}>
-              You're receiving this because you subscribed to event announcements.
-              {" "}
+              You're receiving this because you subscribed to event
+              announcements.{" "}
               <Link
                 href={`${baseUrl}/api/subscribers/unsubscribe?email={{email}}`}
                 style={unsubscribeLink}

@@ -8,7 +8,10 @@ export async function POST(request: NextRequest) {
     const { eventId, fullName, email, phone, guests, subscribeToEmails } = body;
 
     if (!eventId || !fullName || !email || !phone) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 },
+      );
     }
 
     const event = await prisma.event.findUnique({ where: { id: eventId } });
@@ -16,10 +19,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Event not found" }, { status: 404 });
     }
     if (!event.published) {
-      return NextResponse.json({ error: "Event is not available" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Event is not available" },
+        { status: 400 },
+      );
     }
 
-    const guestList: { fullName: string; email?: string; phone?: string }[] = guests ?? [];
+    const guestList: { fullName: string; email?: string; phone?: string }[] =
+      guests ?? [];
     const totalPeople = 1 + guestList.length;
     const totalAmountInCents = event.priceInCents * totalPeople;
 
@@ -34,7 +41,10 @@ export async function POST(request: NextRequest) {
       });
       const takenSeats = existingCount + existingGuests;
       if (takenSeats + totalPeople > event.maxSeats) {
-        return NextResponse.json({ error: "Not enough seats available" }, { status: 409 });
+        return NextResponse.json(
+          { error: "Not enough seats available" },
+          { status: 409 },
+        );
       }
     }
 
@@ -61,7 +71,7 @@ export async function POST(request: NextRequest) {
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: totalAmountInCents,
-      currency: "eur",
+      currency: "gbp",
       metadata: {
         registrationId: registration.id,
         eventId: event.id,
@@ -95,6 +105,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Create payment intent error:", error);
-    return NextResponse.json({ error: "Failed to create payment" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create payment" },
+      { status: 500 },
+    );
   }
 }

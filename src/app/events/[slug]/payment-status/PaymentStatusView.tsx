@@ -18,11 +18,18 @@ type Props = {
   redirectStatus: string | null;
 };
 
-export function PaymentStatusView({ event, registration, redirectStatus }: Props) {
-  const status = redirectStatus ?? registration?.paymentStatus?.toLowerCase() ?? "unknown";
+export function PaymentStatusView({
+  event,
+  registration,
+  redirectStatus,
+}: Props) {
+  const status =
+    redirectStatus ?? registration?.paymentStatus?.toLowerCase() ?? "unknown";
 
-  const isSuccess = status === "succeeded" || registration?.paymentStatus === "PAID";
-  const isFailed = status === "failed" || registration?.paymentStatus === "FAILED";
+  const isSuccess =
+    status === "succeeded" || registration?.paymentStatus === "PAID";
+  const isFailed =
+    status === "failed" || registration?.paymentStatus === "FAILED";
   const isPending = !isSuccess && !isFailed;
 
   return (
@@ -91,7 +98,7 @@ export function PaymentStatusView({ event, registration, redirectStatus }: Props
             <div className="border-t border-[rgba(255,255,255,0.06)] pt-3 flex justify-between text-[15px] font-semibold">
               <span className="text-[#f5f5f0]">Total Paid</span>
               <span className="text-[#c9a96e]" style={{ fontFamily: SERIF }}>
-                €{(registration.totalAmountInCents / 100).toFixed(2)}
+                £{(registration.totalAmountInCents / 100).toFixed(2)}
               </span>
             </div>
           </div>
@@ -108,10 +115,7 @@ export function PaymentStatusView({ event, registration, redirectStatus }: Props
               Try Again
             </Link>
           )}
-          <Link
-            href="/"
-            className="btn-ghost text-[12px]"
-          >
+          <Link href="/" className="btn-ghost text-[12px]">
             <Home size={14} />
             Back to Home
           </Link>
